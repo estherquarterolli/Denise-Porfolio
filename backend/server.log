@@ -1,0 +1,243 @@
+INFO:     Started server process [12812]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54240 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54241 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54242 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54245 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54476 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:54476 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61320 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61320 - "GET /img/d2.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:54476 - "GET /img/d3.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:61320 - "GET /img/d4.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:54476 - "GET /img/d5.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53728 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53728 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56394 - "GET /img/denise-perfil.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53728 - "GET /js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53728 - "GET /img/d1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56394 - "GET /img/d2.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58523 - "GET /img/d4.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49917 - "GET /img/d3.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51806 - "GET /img/d5.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53728 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51806 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65194 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51880 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51880 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52210 - "GET /img/denise-perfil.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51880 - "GET /js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51880 - "GET /img/d1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52210 - "GET /img/d2.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60785 - "GET /img/d3.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51885 - "GET /img/d4.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64653 - "GET /img/d5.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51880 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61608 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64653 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53133 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53133 - "GET /img/denise-perfil.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53133 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53133 - "GET /img/d1.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:58454 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55924 - "GET /admin.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55924 - "GET /css/admin.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53368 - "GET /js/admin.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55924 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53368 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59511 - "GET /api/contact HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53368 - "GET /img/d1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55924 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55948 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55949 - "GET /img/d1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55950 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52003 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52003 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52003 - "GET /js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52003 - "GET /img/d1.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59453 - "GET /img/d2.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52003 - "GET /img/d3.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59453 - "GET /img/d4.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52003 - "GET /img/d5.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52003 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59453 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52003 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61681 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61681 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50260 - "GET /img/denise-perfil.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50260 - "GET /js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50260 - "GET /img/d1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61681 - "GET /img/d2.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53338 - "GET /img/d3.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50662 - "GET /img/d4.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64058 - "GET /img/d5.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50260 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59089 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64058 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50994 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50994 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54967 - "GET /img/denise-perfil.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:54967 - "GET /js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54967 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61162 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50994 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60808 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:60808 - "GET /css/style.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:60808 - "GET /js/main.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:60808 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60808 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55588 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55588 - "GET /img/d2.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:60808 - "GET /img/d3.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:55588 - "GET /img/d4.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:60808 - "GET /img/d5.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:51098 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51098 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60124 - "GET /img/denise-perfil.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60124 - "GET /js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60124 - "GET /img/d1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51098 - "GET /img/d2.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64716 - "GET /img/d3.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /img/d4.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59338 - "GET /img/d5.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60124 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59338 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62585 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61358 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61358 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61358 - "GET /js/main.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:61358 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61358 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64632 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64632 - "GET /img/d1.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:61358 - "GET /img/d2.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:64632 - "GET /img/d3.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:61358 - "GET /img/d4.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:64632 - "GET /img/d5.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59232 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53723 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53723 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56439 - "GET /img/denise-perfil.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56439 - "GET /js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56439 - "GET /img/d1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53723 - "GET /img/d2.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63773 - "GET /img/d5.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57464 - "GET /img/d3.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50660 - "GET /img/d4.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56439 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53610 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63773 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56877 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56877 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62560 - "GET /img/denise-perfil.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62560 - "GET /js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62560 - "GET /img/d1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56877 - "GET /img/d2.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54732 - "GET /img/d3.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54064 - "GET /img/d4.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65199 - "GET /img/d5.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62560 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49983 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65199 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65329 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:65329 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57777 - "GET /img/denise-perfil.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:57777 - "GET /js/main.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:57777 - "GET /img/d2.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:65329 - "GET /img/d3.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:57777 - "GET /img/d4.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:65329 - "GET /img/d5.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:65329 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65329 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57777 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58905 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54004 - "GET /img/denise-perfil.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58905 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58905 - "GET /js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58905 - "GET /img/d1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54004 - "GET /img/d2.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49670 - "GET /img/d3.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50060 - "GET /img/d5.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49962 - "GET /img/d4.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58905 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58905 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58120 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50664 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50664 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63417 - "GET /img/denise-perfil.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50664 - "GET /js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50664 - "GET /img/d1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63417 - "GET /img/d2.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52082 - "GET /img/d3.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62701 - "GET /img/d4.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62840 - "GET /img/d5.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62840 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57449 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50664 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53151 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53152 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53153 - "POST /api/books/1/cover HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54678 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54678 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61270 - "GET /img/denise-perfil.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54678 - "GET /js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54678 - "GET /img/d1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61270 - "GET /img/d2.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62347 - "GET /img/p1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50075 - "GET /img/d4.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54410 - "GET /img/d3.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50075 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61270 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54410 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54410 - "GET /uploads/3f2292325a5e4fc09af1ae24b9c19ee8.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54410 - "GET /img/d5.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59217 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59217 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55994 - "GET /img/denise-perfil.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59217 - "GET /js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59217 - "GET /img/d1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55994 - "GET /img/d2.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65389 - "GET /img/p1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53188 - "GET /img/d3.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58238 - "GET /img/d4.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65389 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64048 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59217 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59217 - "GET /uploads/3f2292325a5e4fc09af1ae24b9c19ee8.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63141 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63141 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57402 - "GET /img/denise-perfil.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57402 - "GET /js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57402 - "GET /img/d1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63141 - "GET /img/d2.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50060 - "GET /img/d3.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60613 - "GET /img/p1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61023 - "GET /img/d4.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61023 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50060 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63141 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63141 - "GET /uploads/3f2292325a5e4fc09af1ae24b9c19ee8.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53430 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53430 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55222 - "GET /img/denise-perfil.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53430 - "GET /js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53430 - "GET /api/projects/categories HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53430 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55222 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55222 - "GET /uploads/3f2292325a5e4fc09af1ae24b9c19ee8.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53657 - "GET /img/d2.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53430 - "GET /img/d1.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:55222 - "GET /img/p1.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55222 - "GET /img/d3.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:55222 - "GET /img/d4.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59372 - "GET /img/d5.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52124 - "GET /admin.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52124 - "GET /css/admin.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:63959 - "GET /js/admin.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63959 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52124 - "GET /api/books HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52124 - "GET /api/contact HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63959 - "GET /api/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52124 - "GET /uploads/3f2292325a5e4fc09af1ae24b9c19ee8.jpg HTTP/1.1" 304 Not Modified

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Denise Ana Augusta dos Santos Oliveira — Portfólio</title>
+<meta name="description" content="Portfólio acadêmico de Denise Ana Augusta dos Santos Oliveira — Doutora em Educação em Ciências e Saúde, pesquisadora e docente.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<link rel="stylesheet" href="css/style.css?v=layout-20260921-4">
+</head>
+<body>
+
+<!-- Cursor personalizado -->
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- Barra de progresso de leitura -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Loader inicial -->
+<div class="loader" id="loader">
+  <span class="loader-text">carregando</span>
+</div>
+
+<!-- Navegação -->
+<nav class="navbar" id="navbar">
+  <a href="#home" class="nav-logo">D<span>.</span></a>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">
+    <i class="ph ph-list"></i>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home" data-nav>início</a></li>
+    <li><a href="#sobre" data-nav>sobre</a></li>
+    <li><a href="#formacao" data-nav>formação</a></li>
+    <li><a href="#livros" data-nav>livros</a></li>
+    <li><a href="#projetos" data-nav>projetos</a></li>
+    <li><a href="#contato" data-nav>contato</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="home">
+  <div class="hero-shape shape-1"></div>
+  <div class="hero-shape shape-2"></div>
+  <div class="hero-shape shape-3"></div>
+
+  <div class="hero-inner">
+    <p class="hero-eyebrow reveal-up">Educação em Ciências &amp; Saúde</p>
+    <h1 class="hero-title">
+      <span class="reveal-line"><span class="reveal-inner">Denise Ana</span></span>
+      <span class="reveal-line"><span class="reveal-inner">Augusta dos</span></span>
+      <span class="reveal-line"><span class="reveal-inner">Santos <em>Oliveira</em></span></span>
+    </h1>
+    <p class="hero-subtitle reveal-up">
+      Doutora em Educação em Ciências e Saúde (UFRJ) · Docente do PPGECS/Unigranrio ·
+      Pesquisadora em letramentos, linguagens e questões sociocientíficas no Ensino de Ciências
+    </p>
+    <div class="hero-actions reveal-up">
+      <a href="#projetos" class="btn btn-primary">
+        Ver projetos <i class="ph-bold ph-arrow-down-right"></i>
+      </a>
+      <a href="#contato" class="btn btn-outline">Fale comigo</a>
+    </div>
+  </div>
+
+  <div class="hero-photo-wrap reveal-up">
+    <div class="hero-photo">
+      <img id="heroPhoto" src="img/denise-perfil.jpeg" alt="Foto de Denise Ana Augusta dos Santos Oliveira">
+    </div>
+    <div class="hero-photo-badge">
+      <i class="ph-bold ph-graduation-cap"></i>
+      <span>Doutora &amp; Pesquisadora</span>
+    </div>
+  </div>
+
+  <a href="#sobre" class="scroll-hint" aria-label="Rolar para baixo">
+    <i class="ph ph-mouse-simple"></i>
+    <span>scroll</span>
+  </a>
+</header>
+
+<!-- SOBRE -->
+<section class="section section-sobre" id="sobre">
+  <div class="section-head">
+    <span class="section-number">01</span>
+    <h2 class="section-title">Sobre <span class="hl">mim</span></h2>
+  </div>
+
+  <div class="sobre-grid">
+    <div class="sobre-text anim-fade-up">
+      <p>
+        Sou Doutora em Educação em Ciências e Saúde pela <strong>UFRJ</strong>, Mestre em
+        Ensino de Ciências pelo <strong>IFRJ</strong>, Pedagoga, especialista em Educação
+        Psicomotora e em Gestão Escolar. Atuo como docente do Programa de Pós-graduação em
+        Ensino de Ciências e Saúde (PPGECS) da <strong>Unigranrio/Afya</strong>.
+      </p>
+      <p>
+        Sou pesquisadora da Rede Internacional de Estudos Decoloniais na Educação Científica
+        e Tecnológica (RIEDECT), membro associada da AIA-CTS e lidero o grupo de pesquisas
+        <strong>EDUCAS</strong> — Linguagem e Discursos no Ensino de Ciências e Saúde, registrado
+        no DGP/CNPq. Meus interesses de pesquisa envolvem letramentos, linguagens, discursos,
+        multimodalidade e questões sociocientíficas no Ensino de Ciências, Saúde e Ambiente.
+      </p>
+      <p>
+        Fui premiada com o título de melhor dissertação de mestrado na área "CTS na Educação
+        Científica" pela Associação Ibero-americana CTS (Prêmio AIA-CTS, 2018), recebi o
+        Prêmio Gente que Faz e Acontece (SME Duque de Caxias, 2019) e fui homenageada pela
+        promoção literária na rede municipal de Duque de Caxias em 2021.
+      </p>
+    </div>
+
+    <div class="sobre-stats">
+      <div class="stat-card">
+        <i class="ph-bold ph-book-open-text"></i>
+        <strong>Doutorado</strong>
+        <span>Educação em Ciências e Saúde — UFRJ</span>
+      </div>
+      <div class="stat-card">
+        <i class="ph-bold ph-chalkboard-teacher"></i>
+        <strong>Docência</strong>
+        <span>PPGECS — Unigranrio/Afya</span>
+      </div>
+      <div class="stat-card">
+        <i class="ph-bold ph-users-three"></i>
+        <strong>Liderança</strong>
+        <span>Grupo de pesquisa EDUCAS (DGP/CNPq)</span>
+      </div>
+      <div class="stat-card">
+        <i class="ph-bold ph-trophy"></i>
+        <strong>Reconhecimento</strong>
+        <span>Prêmio AIA-CTS (2018)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sobre-carousel anim-fade-up" id="sobreCarousel">
+    <div class="carousel-viewport">
+      <div class="carousel-track" id="carouselTrack">
+        <figure class="gallery-item" tabindex="0" role="button" aria-label="Ampliar foto: Lançamento de Jogue Sementes">
+          <img src="img/d1.jpeg" alt="Denise segurando o livro Jogue Sementes" loading="lazy">
+          <span class="gallery-zoom-hint"><i class="ph-bold ph-magnifying-glass-plus"></i></span>
+          <figcaption>Lançamento de "Jogue Sementes"</figcaption>
+        </figure>
+        <figure class="gallery-item" tabindex="0" role="button" aria-label="Ampliar foto: Projeto Mãos à Horta">
+          <img src="img/d2.png" alt="Denise em evento do projeto Mãos à Horta" loading="lazy">
+          <span class="gallery-zoom-hint"><i class="ph-bold ph-magnifying-glass-plus"></i></span>
+          <figcaption>Projeto Mãos à Horta</figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item-poster" tabindex="0" role="button" aria-label="Ampliar imagem: Bolsa aprovada no Afycionados por Ciência">
+          <img src="img/p1.jpeg" alt="Divulgação da bolsa de pesquisa aprovada: Determinantes socioambientais das infecções respiratórias na infância" loading="lazy">
+          <span class="gallery-zoom-hint"><i class="ph-bold ph-magnifying-glass-plus"></i></span>
+          <figcaption>Bolsa aprovada: infecções respiratórias na infância</figcaption>
+        </figure>
+        <figure class="gallery-item" tabindex="0" role="button" aria-label="Ampliar foto: Também gosta de viajar">
+          <img src="img/d3.png" alt="Denise em viagem" loading="lazy">
+          <span class="gallery-zoom-hint"><i class="ph-bold ph-magnifying-glass-plus"></i></span>
+          <figcaption>Também gosta de viajar</figcaption>
+        </figure>
+        <figure class="gallery-item" tabindex="0" role="button" aria-label="Ampliar foto: No dia a dia da Unigranrio">
+          <img src="img/d4.png" alt="Denise em evento acadêmico" loading="lazy">
+          <span class="gallery-zoom-hint"><i class="ph-bold ph-magnifying-glass-plus"></i></span>
+          <figcaption>No dia a dia da Unigranrio</figcaption>
+        </figure>
+        <figure class="gallery-item" tabindex="0" role="button" aria-label="Ampliar foto: Um cafézinho pra recarregar">
+          <img src="img/d5.png" alt="Denise tomando um café" loading="lazy">
+          <span class="gallery-zoom-hint"><i class="ph-bold ph-magnifying-glass-plus"></i></span>
+          <figcaption>Um cafézinho pra recarregar</figcaption>
+        </figure>
+      </div>
+    </div>
+    <button class="carousel-arrow carousel-prev" id="carouselPrev" aria-label="Slide anterior"><i class="ph-bold ph-caret-left"></i></button>
+    <button class="carousel-arrow carousel-next" id="carouselNext" aria-label="Próximo slide"><i class="ph-bold ph-caret-right"></i></button>
+    <div class="carousel-dots" id="carouselDots"></div>
+  </div>
+</section>
+
+<!-- LIGHTBOX DA GALERIA -->
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox-close" id="lightboxClose" aria-label="Fechar"><i class="ph-bold ph-x"></i></button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Foto anterior"><i class="ph-bold ph-caret-left"></i></button>
+  <figure class="lightbox-content">
+    <img id="lightboxImg" src="" alt="">
+    <figcaption id="lightboxCaption"></figcaption>
+  </figure>
+  <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Próxima foto"><i class="ph-bold ph-caret-right"></i></button>
+</div>
+
+<!-- FORMAÇÃO -->
+<section class="section section-formacao" id="formacao">
+  <div class="section-head">
+    <span class="section-number">02</span>
+    <h2 class="section-title">Formação <span class="hl">acadêmica</span></h2>
+  </div>
+
+  <div class="timeline" hidden>
+    <div class="timeline-line" aria-hidden="true"></div>
+    <div class="timeline-item anim-fade-up">
+      <span class="timeline-year">2018 – 2023</span>
+      <div class="timeline-content">
+        <i class="ph-bold ph-graduation-cap"></i>
+        <h3>Doutorado em Educação em Ciências e Saúde</h3>
+        <p>Universidade Federal do Rio de Janeiro (UFRJ)</p>
+      </div>
+    </div>
+    <div class="timeline-item anim-fade-up">
+      <span class="timeline-year">2016 – 2017</span>
+      <div class="timeline-content">
+        <i class="ph-bold ph-graduation-cap"></i>
+        <h3>Mestrado Profissional em Ensino de Ciências</h3>
+        <p>Instituto Federal de Educação, Ciência e Tecnologia do RJ (IFRJ)</p>
+      </div>
+    </div>
+    <div class="timeline-item anim-fade-up">
+      <span class="timeline-year">2025 – 2026</span>
+      <div class="timeline-content">
+        <i class="ph-bold ph-certificate"></i>
+        <h3>Especialização em Docência na Educação Infantil</h3>
+        <p>Universidade Federal Rural do Rio de Janeiro (UFRRJ)</p>
+      </div>
+    </div>
+    <div class="timeline-item anim-fade-up">
+      <span class="timeline-year">2010 – 2011</span>
+      <div class="timeline-content">
+        <i class="ph-bold ph-certificate"></i>
+        <h3>Especialização em Gestão Escolar Integrada</h3>
+        <p>Faculdades Integradas de Jacarepaguá (FIJ)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline" aria-label="Formação acadêmica completa">
+    <div class="timeline-line" aria-hidden="true"></div>
+
+    <article class="timeline-item anim-fade-up">
+      <span class="timeline-year">2025 – 2026</span>
+      <div class="timeline-content">
+        <i class="ph-bold ph-certificate"></i>
+        <h3>Especialização em Docência na Educação Infantil</h3>
+        <p class="timeline-institution">Universidade Federal Rural do Rio de Janeiro — UFRRJ, Brasil · Carga horária: 1.800h</p>
+        <p class="timeline-details"><strong>Título:</strong> Uma análise crítica dos discursos docentes sobre o desemparedamento na Educação Infantil.<br><strong>Orientadora:</strong> Maria Clara de Lima Santiago Camões.</p>
+      </div>
+    </article>
+
+    <article class="timeline-item anim-fade-up">
+      <span class="timeline-year">2018 – 2023</span>
+      <div class="timeline-content">
+        <i class="ph-bold ph-graduation-cap"></i>
+        <h3>Doutorado em Educação em Ciências e Saúde</h3>
+        <p class="timeline-institution">Universidade Federal do Rio de Janeiro — UFRJ, Brasil</p>
+        <p class="timeline-details"><strong>Título:</strong> De rio a valão: a linguagem literária na textualização de discursos sobre questões hídricas nas correntezas da literatura infantil. <strong>Ano de obtenção:</strong> 2023.<br><strong>Orientador:</strong> Bruno Andrade Pinto Monteiro.<br><strong>Coorientadora:</strong> Isabel Gomes Rodrigues Martins.</p>
+      </div>
+    </article>
+
+    <article class="timeline-item anim-fade-up">
+      <span class="timeline-year">2016 – 2017</span>
+      <div class="timeline-content">
+        <i class="ph-bold ph-graduation-cap"></i>
+        <h3>Mestrado Profissional em Ensino de Ciências</h3>
+        <p class="timeline-institution">Instituto Federal de Educação, Ciência e Tecnologia do Rio de Janeiro — IFRJ, Brasil</p>
+        <p class="timeline-details"><strong>Título:</strong> Tessituras sociocientíficas no contexto da horta escolar: com o protagonismo infantil das narrativas à produção literária nos anos iniciais do Ensino Fundamental. <strong>Ano de obtenção:</strong> 2017.<br><strong>Orientador:</strong> Jorge Cardoso Messeder.<br><strong>Palavras-chave:</strong> Ensino de Ciências; Ensino Fundamental; CTS; horta escolar; questões sociocientíficas.<br><strong>Grande área:</strong> Ciências Humanas / Educação / Ensino de Ciências.<br><strong>Setor de atividade:</strong> Educação.</p>
+      </div>
+    </article>
+
+    <article class="timeline-item anim-fade-up">
+      <span class="timeline-year">2010 – 2011</span>
+      <div class="timeline-content">
+        <i class="ph-bold ph-certificate"></i>
+        <h3>Especialização em Gestão Escolar Integrada</h3>
+        <p class="timeline-institution">Faculdades Integradas de Jacarepaguá — FIJ, Brasil · Carga horária: 1.200h</p>
+        <p class="timeline-details"><strong>Título:</strong> A Gestão Escolar Integrada nas escolas municipais.<br><strong>Orientadora:</strong> Sandra Alves Corrêa.</p>
+      </div>
+    </article>
+
+    <article class="timeline-item anim-fade-up">
+      <span class="timeline-year">2008 – 2009</span>
+      <div class="timeline-content">
+        <i class="ph-bold ph-certificate"></i>
+        <h3>Especialização em Psicomotricidade Aplicada à Educação</h3>
+        <p class="timeline-institution">Faculdades Integradas de Jacarepaguá — FIJ, Brasil · Carga horária: 360h</p>
+        <p class="timeline-details"><strong>Título:</strong> Educação Psicomotora: o corpo como instrumento de comunicação e aprendizagem.<br><strong>Orientadora:</strong> Wânia Ribeiro Fernandes.</p>
+      </div>
+    </article>
+
+    <article class="timeline-item anim-fade-up">
+      <span class="timeline-year">2007 · interrompida em 2009</span>
+      <div class="timeline-content">
+        <i class="ph-bold ph-scales"></i>
+        <h3>Graduação em Direito — interrompida</h3>
+        <p class="timeline-institution">Universidade Estácio de Sá — UNESA, Brasil</p>
+        <p class="timeline-details"><strong>Ano de interrupção:</strong> 2009.</p>
+      </div>
+    </article>
+
+    <article class="timeline-item anim-fade-up">
+      <span class="timeline-year">2003 – 2006</span>
+      <div class="timeline-content">
+        <i class="ph-bold ph-student"></i>
+        <h3>Graduação em Pedagogia</h3>
+        <p class="timeline-institution">Universidade Estácio de Sá — UNESA, Brasil</p>
+        <p class="timeline-details"><strong>Título:</strong> A educação psicomotora: o corpo que atua como instrumento de comunicação e aprendizagem.<br><strong>Orientador:</strong> Fernando César Ferreira Gouvêa.</p>
+      </div>
+    </article>
+
+    <article class="timeline-item anim-fade-up">
+      <span class="timeline-year">1994 – 1998</span>
+      <div class="timeline-content">
+        <i class="ph-bold ph-chalkboard-teacher"></i>
+        <h3>Curso Técnico/Profissionalizante em Magistério</h3>
+        <p class="timeline-institution">Escola Estadual René de Oliveira Barbosa — EEROB, Brasil</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- LIVROS -->
+<section class="section section-livros" id="livros">
+  <div class="section-head">
+    <span class="section-number">03</span>
+    <h2 class="section-title">Livros <span class="hl">publicados</span></h2>
+  </div>
+
+  <div class="livros-grid" id="livrosGrid">
+    <!-- cards inseridos via JS -->
+  </div>
+
+  <p class="livros-empty" id="livrosEmpty" hidden>Nenhum livro cadastrado ainda.</p>
+</section>
+
+<!-- PROJETOS -->
+<section class="section section-projetos" id="projetos">
+  <div class="section-head">
+    <span class="section-number">04</span>
+    <h2 class="section-title">Projetos &amp; <span class="hl">Pesquisas</span></h2>
+  </div>
+
+  <div class="projetos-controls anim-fade-up">
+    <div class="search-box">
+      <i class="ph ph-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Buscar por título ou descrição...">
+    </div>
+    <div class="filter-chips" id="filterChips">
+      <button class="chip active" data-category="">Todos</button>
+      <!-- categorias inseridas via JS -->
+    </div>
+  </div>
+
+  <div class="projetos-grid" id="projetosGrid">
+    <!-- cards inseridos via JS -->
+  </div>
+
+  <p class="projetos-empty" id="projetosEmpty" hidden>Nenhum projeto encontrado com esse filtro.</p>
+</section>
+
+<!-- CONTATO -->
+<section class="section section-contato" id="contato">
+  <div class="section-head">
+    <span class="section-number">05</span>
+    <h2 class="section-title">Vamos <span class="hl">conversar?</span></h2>
+  </div>
+
+  <div class="contato-grid">
+    <div class="contato-info anim-fade-up">
+      <p>
+        Tem interesse em pesquisa, orientação, parcerias acadêmicas ou quer bater um papo
+        sobre Ensino de Ciências e Saúde? Me manda uma mensagem.
+      </p>
+      <ul class="contato-links">
+        <li>
+          <a href="https://www.linkedin.com/in/denise-ana-oliveira-50aba546" target="_blank" rel="noopener">
+            <i class="ph-bold ph-linkedin-logo"></i> LinkedIn
+          </a>
+        </li>
+        <li>
+          <a href="https://independent.academia.edu/DENISEANAAUGUSTADOSSANTOSOLIVEIRA" target="_blank" rel="noopener">
+            <i class="ph-bold ph-graduation-cap"></i> Academia.edu
+          </a>
+        </li>
+        <li>
+          <a href="http://lattes.cnpq.br/0124011924215806" target="_blank" rel="noopener">
+            <i class="ph-bold ph-identification-badge"></i> Currículo Lattes
+          </a>
+        </li>
+        <li>
+          <a href="https://instagram.com/prof_denise_ana" target="_blank" rel="noopener">
+            <i class="ph-bold ph-instagram-logo"></i> Instagram
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <form class="contato-form anim-fade-up" id="contactForm">
+      <div class="form-row">
+        <label for="name">Nome</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-row">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-row">
+        <label for="message">Mensagem</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" id="contactSubmit">
+        Enviar mensagem <i class="ph-bold ph-paper-plane-tilt"></i>
+      </button>
+      <p class="form-feedback" id="formFeedback" hidden></p>
+    </form>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>© <span id="year"></span> Denise Ana Augusta dos Santos Oliveira</p>
+  <a href="/admin.html" class="footer-admin-link">painel admin</a>
+</footer>
+
+<script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="js/main.js?v=layout-20260921-3"></script>
+</body>
+</html>

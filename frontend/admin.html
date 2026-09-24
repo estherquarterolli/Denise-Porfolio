@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Portfólio Denise</title>
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<!-- TELA DE LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <form class="login-card" id="loginForm">
+    <h1><i class="ph-bold ph-lock-key"></i> Painel Admin</h1>
+    <p class="login-sub">Gerencie os projetos do portfólio</p>
+    <div class="field">
+      <label for="loginUsername">Usuário</label>
+      <input type="text" id="loginUsername" required autocomplete="username">
+    </div>
+    <div class="field">
+      <label for="loginPassword">Senha</label>
+      <input type="password" id="loginPassword" required autocomplete="current-password">
+    </div>
+    <button type="submit" class="btn-primary">Entrar</button>
+    <p class="login-error" id="loginError" hidden></p>
+  </form>
+</div>
+
+<!-- PAINEL -->
+<div class="admin-app" id="adminApp" hidden>
+  <aside class="sidebar">
+    <div class="sidebar-brand"><i class="ph-bold ph-squares-four"></i> Admin</div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-tab="projects"><i class="ph ph-briefcase"></i> Projetos</button>
+      <button class="nav-item" data-tab="books"><i class="ph ph-book-bookmark"></i> Livros</button>
+      <button class="nav-item" data-tab="messages"><i class="ph ph-envelope-simple"></i> Mensagens</button>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="/" target="_blank" class="nav-item"><i class="ph ph-arrow-square-out"></i> Ver site</a>
+      <button class="nav-item logout" id="logoutBtn"><i class="ph ph-sign-out"></i> Sair</button>
+    </div>
+  </aside>
+
+  <main class="content">
+    <!-- TAB: PROJETOS -->
+    <section id="tabProjects" class="tab-panel">
+      <header class="content-header">
+        <h2>Projetos</h2>
+        <button class="btn-primary" id="newProjectBtn"><i class="ph-bold ph-plus"></i> Novo projeto</button>
+      </header>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Título</th>
+              <th>Categoria</th>
+              <th>Status</th>
+              <th>Destaque</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="projectsTableBody">
+            <tr><td colspan="6" class="empty-row">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB: LIVROS -->
+    <section id="tabBooks" class="tab-panel" hidden>
+      <header class="content-header">
+        <h2>Livros</h2>
+        <button class="btn-primary" id="newBookBtn"><i class="ph-bold ph-plus"></i> Novo livro</button>
+      </header>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Título</th>
+              <th>Ano</th>
+              <th>Editora</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="booksTableBody">
+            <tr><td colspan="5" class="empty-row">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB: MENSAGENS -->
+    <section id="tabMessages" class="tab-panel" hidden>
+      <header class="content-header">
+        <h2>Mensagens de contato</h2>
+      </header>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Mensagem</th>
+              <th>Data</th>
+              <th>E-mail enviado?</th>
+            </tr>
+          </thead>
+          <tbody id="messagesTableBody">
+            <tr><td colspan="5" class="empty-row">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- MODAL: CRIAR/EDITAR PROJETO -->
+<div class="modal-overlay" id="projectModal" hidden>
+  <div class="modal">
+    <header class="modal-header">
+      <h3 id="modalTitle">Novo projeto</h3>
+      <button class="modal-close" id="modalClose"><i class="ph ph-x"></i></button>
+    </header>
+
+    <form id="projectForm" class="modal-body">
+      <input type="hidden" id="projectId">
+
+      <div class="field">
+        <label for="fieldTitle">Título *</label>
+        <input type="text" id="fieldTitle" required>
+      </div>
+
+      <div class="field">
+        <label for="fieldDescription">Descrição *</label>
+        <textarea id="fieldDescription" rows="4" required></textarea>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="fieldCategory">Categoria</label>
+          <input type="text" id="fieldCategory" placeholder="Ex: Pesquisa, Extensão...">
+        </div>
+        <div class="field">
+          <label for="fieldDate">Período</label>
+          <input type="text" id="fieldDate" placeholder="Ex: 2025 - Atual">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="fieldTech">Tecnologias / Temas (separados por vírgula)</label>
+        <input type="text" id="fieldTech" placeholder="Ex: Python, Educação, Saúde Pública">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="fieldRepo">Link do repositório</label>
+          <input type="url" id="fieldRepo" placeholder="https://...">
+        </div>
+        <div class="field">
+          <label for="fieldDemo">Link da demo/publicação</label>
+          <input type="url" id="fieldDemo" placeholder="https://...">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="fieldStatus">Status</label>
+          <select id="fieldStatus">
+            <option value="em_andamento">Em andamento</option>
+            <option value="concluido">Concluído</option>
+          </select>
+        </div>
+        <div class="field checkbox-field">
+          <label><input type="checkbox" id="fieldFeatured"> Marcar como destaque</label>
+        </div>
+      </div>
+
+      <div class="field" id="imagesFieldWrap" hidden>
+        <label>Imagens</label>
+        <div class="image-gallery" id="imageGallery"></div>
+        <input type="file" id="imageUploadInput" accept="image/*">
+        <p class="hint">Salve o projeto antes de adicionar imagens.</p>
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="btn-outline" id="deleteProjectBtn" hidden>Excluir projeto</button>
+        <div class="modal-footer-right">
+          <button type="button" class="btn-outline" id="cancelBtn">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar</button>
+        </div>
+      </footer>
+      <p class="form-error" id="projectFormError" hidden></p>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: CRIAR/EDITAR LIVRO -->
+<div class="modal-overlay" id="bookModal" hidden>
+  <div class="modal">
+    <header class="modal-header">
+      <h3 id="bookModalTitle">Novo livro</h3>
+      <button class="modal-close" id="bookModalClose"><i class="ph ph-x"></i></button>
+    </header>
+
+    <form id="bookForm" class="modal-body">
+      <input type="hidden" id="bookId">
+
+      <div class="field">
+        <label for="bookFieldTitle">Título *</label>
+        <input type="text" id="bookFieldTitle" required>
+      </div>
+
+      <div class="field">
+        <label for="bookFieldDescription">Descrição *</label>
+        <textarea id="bookFieldDescription" rows="4" required></textarea>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="bookFieldYear">Ano</label>
+          <input type="text" id="bookFieldYear" placeholder="Ex: 2025">
+        </div>
+        <div class="field">
+          <label for="bookFieldPublisher">Editora</label>
+          <input type="text" id="bookFieldPublisher" placeholder="Ex: Editora Mar">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="bookFieldUrl">Link para leitura/aquisição</label>
+        <input type="url" id="bookFieldUrl" placeholder="https://...">
+      </div>
+
+      <div class="field" id="bookCoverFieldWrap" hidden>
+        <label>Capa</label>
+        <div class="image-gallery" id="bookCoverPreview"></div>
+        <input type="file" id="bookCoverInput" accept="image/*">
+        <p class="hint">Salve o livro antes de adicionar a capa.</p>
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="btn-outline" id="deleteBookBtn" hidden>Excluir livro</button>
+        <div class="modal-footer-right">
+          <button type="button" class="btn-outline" id="bookCancelBtn">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar</button>
+        </div>
+      </footer>
+      <p class="form-error" id="bookFormError" hidden></p>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
