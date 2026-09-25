@@ -90,6 +90,128 @@ class BookOut(BookBase):
     model_config = ConfigDict(from_attributes=True)
 
 
+# ---------- Publicações ----------
+
+class PublicationBase(BaseModel):
+    title: str = Field(..., min_length=2, max_length=300)
+    kicker: Optional[str] = None
+    category: Optional[str] = None
+    external_url: Optional[str] = None
+    featured: bool = False
+    order: int = 0
+
+
+class PublicationCreate(PublicationBase):
+    pass
+
+
+class PublicationUpdate(BaseModel):
+    title: Optional[str] = None
+    kicker: Optional[str] = None
+    category: Optional[str] = None
+    external_url: Optional[str] = None
+    featured: Optional[bool] = None
+    order: Optional[int] = None
+
+
+class PublicationOut(PublicationBase):
+    id: int
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+# ---------- Produtos educacionais ----------
+
+class EducationalProductBase(BaseModel):
+    title: str = Field(..., min_length=2, max_length=300)
+    kicker: Optional[str] = None
+    category: Optional[str] = None
+    external_url: Optional[str] = None
+    order: int = 0
+
+
+class EducationalProductCreate(EducationalProductBase):
+    pass
+
+
+class EducationalProductUpdate(BaseModel):
+    title: Optional[str] = None
+    kicker: Optional[str] = None
+    category: Optional[str] = None
+    external_url: Optional[str] = None
+    order: Optional[int] = None
+
+
+class EducationalProductOut(EducationalProductBase):
+    id: int
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+# ---------- Imagens da seção Sobre mim ----------
+
+class AboutImageUpdate(BaseModel):
+    caption: Optional[str] = Field(default=None, max_length=250)
+    alt_text: Optional[str] = Field(default=None, max_length=250)
+    order: Optional[int] = Field(default=None, ge=0)
+
+
+class AboutImageOut(BaseModel):
+    id: int
+    image_path: str
+    caption: Optional[str] = None
+    alt_text: Optional[str] = None
+    order: int
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class AboutImageOrderUpdate(BaseModel):
+    id: int
+    order: int = Field(..., ge=0)
+
+
+# ---------- Trajetória acadêmica e profissional ----------
+
+class CareerTimelineItemBase(BaseModel):
+    year: str = Field(..., min_length=1, max_length=50)
+    title: str = Field(..., min_length=2, max_length=160)
+    detail: str = Field(..., min_length=2, max_length=300)
+    order: int = Field(default=0, ge=0)
+
+
+class CareerTimelineItemOut(CareerTimelineItemBase):
+    id: Optional[int] = None
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CareerHighlightBase(BaseModel):
+    label: str = Field(..., min_length=2, max_length=160)
+    text: str = Field(..., min_length=2, max_length=500)
+    order: int = Field(default=0, ge=0)
+
+
+class CareerHighlightOut(CareerHighlightBase):
+    id: Optional[int] = None
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CareerContentUpdate(BaseModel):
+    timeline: List[CareerTimelineItemBase]
+    highlights: List[CareerHighlightBase]
+
+
+class CareerContentOut(BaseModel):
+    timeline: List[CareerTimelineItemOut]
+    highlights: List[CareerHighlightOut]
+
+
 # ---------- Autenticação ----------
 
 class Token(BaseModel):

@@ -83,6 +83,80 @@ class Book(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
+class AboutImage(Base):
+    """Imagens escolhidas no painel para compor a seção Sobre mim."""
+
+    __tablename__ = "about_images"
+
+    id = Column(Integer, primary_key=True, index=True)
+    image_path = Column(String(500), nullable=False)
+    caption = Column(String(250), nullable=True)
+    alt_text = Column(String(250), nullable=True)
+    order = Column(Integer, default=0, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class CareerTimelineItem(Base):
+    """Marco editável da linha do tempo acadêmica."""
+
+    __tablename__ = "career_timeline_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    year = Column(String(50), nullable=False)
+    title = Column(String(160), nullable=False)
+    detail = Column(String(300), nullable=False)
+    order = Column(Integer, default=0, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class CareerHighlight(Base):
+    """Texto curto exibido nos destaques da trajetória profissional."""
+
+    __tablename__ = "career_highlights"
+
+    id = Column(Integer, primary_key=True, index=True)
+    label = Column(String(160), nullable=False)
+    text = Column(String(500), nullable=False)
+    order = Column(Integer, default=0, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class Publication(Base):
+    """Publicações acadêmicas exibidas na seção Publicações."""
+
+    __tablename__ = "publications"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(300), nullable=False)
+    kicker = Column(String(250), nullable=True)  # linha curta acima do título, ex: "2026 · Divulgação científica · Saúde"
+    category = Column(String(100), nullable=True, index=True)
+    external_url = Column(String(500), nullable=True)
+    featured = Column(Boolean, default=False, nullable=False)
+    order = Column(Integer, default=0, nullable=False)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class EducationalProduct(Base):
+    """Produtos educacionais exibidos na seção Produtos Educacionais."""
+
+    __tablename__ = "educational_products"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(300), nullable=False)
+    kicker = Column(String(250), nullable=True)
+    category = Column(String(100), nullable=True, index=True)
+    external_url = Column(String(500), nullable=True)
+    order = Column(Integer, default=0, nullable=False)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
 class AdminUser(Base):
     __tablename__ = "admin_users"
 

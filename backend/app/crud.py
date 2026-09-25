@@ -140,7 +140,7 @@ def update_book(db: Session, book: models.Book, data: schemas.BookUpdate) -> mod
     return book
 
 
-def set_book_cover(db: Session, book: models.Book, cover_image: str) -> models.Book:
+def set_book_cover(db: Session, book: models.Book, cover_image: Optional[str]) -> models.Book:
     book.cover_image = cover_image
     db.commit()
     db.refresh(book)
@@ -150,6 +150,156 @@ def set_book_cover(db: Session, book: models.Book, cover_image: str) -> models.B
 def delete_book(db: Session, book: models.Book) -> None:
     db.delete(book)
     db.commit()
+
+
+def get_publications(db: Session) -> List[models.Publication]:
+    return db.query(models.Publication).order_by(
+        models.Publication.featured.desc(), models.Publication.order.asc(), models.Publication.created_at.desc()
+    ).all()
+
+
+def get_publication(db: Session, publication_id: int) -> Optional[models.Publication]:
+    return db.query(models.Publication).filter(models.Publication.id == publication_id).first()
+
+
+def create_publication(db: Session, data: schemas.PublicationCreate) -> models.Publication:
+    publication = models.Publication(**data.model_dump())
+    db.add(publication)
+    db.commit()
+    db.refresh(publication)
+    return publication
+
+
+def update_publication(
+    db: Session, publication: models.Publication, data: schemas.PublicationUpdate
+) -> models.Publication:
+    for field, value in data.model_dump(exclude_unset=True).items():
+        setattr(publication, field, value)
+    db.commit()
+    db.refresh(publication)
+    return publication
+
+
+def delete_publication(db: Session, publication: models.Publication) -> None:
+    db.delete(publication)
+    db.commit()
+
+
+def get_products(db: Session) -> List[models.EducationalProduct]:
+    return db.query(models.EducationalProduct).order_by(
+        models.EducationalProduct.order.asc(), models.EducationalProduct.created_at.desc()
+    ).all()
+
+
+def get_product(db: Session, product_id: int) -> Optional[models.EducationalProduct]:
+    return db.query(models.EducationalProduct).filter(models.EducationalProduct.id == product_id).first()
+
+
+def create_product(db: Session, data: schemas.EducationalProductCreate) -> models.EducationalProduct:
+    product = models.EducationalProduct(**data.model_dump())
+    db.add(product)
+    db.commit()
+    db.refresh(product)
+    return product
+
+
+def update_product(
+    db: Session, product: models.EducationalProduct, data: schemas.EducationalProductUpdate
+) -> models.EducationalProduct:
+    for field, value in data.model_dump(exclude_unset=True).items():
+        setattr(product, field, value)
+    db.commit()
+    db.refresh(product)
+    return product
+
+
+def delete_product(db: Session, product: models.EducationalProduct) -> None:
+    db.delete(product)
+    db.commit()
+
+
+def get_about_images(db: Session) -> List[models.AboutImage]:
+    return db.query(models.AboutImage).order_by(
+        models.AboutImage.order.asc(), models.AboutImage.created_at.asc()
+    ).all()
+
+
+def get_about_image(db: Session, image_id: int) -> Optional[models.AboutImage]:
+    return db.query(models.AboutImage).filter(models.AboutImage.id == image_id).first()
+
+
+def add_about_image(
+    db: Session,
+    image_path: str,
+    caption: Optional[str] = None,
+    alt_text: Optional[str] = None,
+    order: int = 0,
+) -> models.AboutImage:
+    image = models.AboutImage(
+        image_path=image_path,
+        caption=caption or None,
+        alt_text=alt_text or None,
+        order=order,
+    )
+    db.add(image)
+    db.commit()
+    db.refresh(image)
+    return image
+
+
+def update_about_image(
+    db: Session, image: models.AboutImage, data: schemas.AboutImageUpdate
+) -> models.AboutImage:
+    for field, value in data.model_dump(exclude_unset=True).items():
+        setattr(image, field, value)
+    db.commit()
+    db.refresh(image)
+    return image
+
+
+def delete_about_image(db: Session, image: models.AboutImage) -> None:
+    db.delete(image)
+    db.commit()
+
+
+def reorder_about_images(
+    db: Session, items: List[schemas.AboutImageOrderUpdate]
+) -> List[models.AboutImage]:
+    images_by_id = {
+        image.id: image
+        for image in db.query(models.AboutImage).filter(
+            models.AboutImage.id.in_([item.id for item in items])
+        ).all()
+    }
+    for item in items:
+        image = images_by_id.get(item.id)
+        if image:
+            image.order = item.order
+    db.commit()
+    return get_about_images(db)
+
+
+def get_career_content(db: Session):
+    timeline = db.query(models.CareerTimelineItem).order_by(
+        models.CareerTimelineItem.order.asc(), models.CareerTimelineItem.id.asc()
+    ).all()
+    highlights = db.query(models.CareerHighlight).order_by(
+        models.CareerHighlight.order.asc(), models.CareerHighlight.id.asc()
+    ).all()
+    return timeline, highlights
+
+
+def replace_career_content(db: Session, data: schemas.CareerContentUpdate):
+    db.query(models.CareerTimelineItem).delete()
+    db.query(models.CareerHighlight).delete()
+    db.add_all([
+        models.CareerTimelineItem(**item.model_dump()) for item in data.timeline
+    ])
+    db.add_all([
+        models.CareerHighlight(**item.model_dump()) for item in data.highlights
+    ])
+    db.commit()
+    return get_career_content(db)
 
 
 def get_distinct_categories(db: Session) -> List[str]:

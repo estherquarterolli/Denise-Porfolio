@@ -1,0 +1,5 @@
+2026/09/25-16:44:58.908 573c Creating DB C:\Users\Administrator\Documents\GitHub\Denise-Porfolio\test-results\layout-timeline-profile-a\Default\EdgeCoupons/coupons_data.db since it was missing.
+2026/09/25-16:44:58.954 573c Reusing MANIFEST C:\Users\Administrator\Documents\GitHub\Denise-Porfolio\test-results\layout-timeline-profile-a\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/09/25-16:44:59.370 570c Level-0 table #5: started
+2026/09/25-16:44:59.373 570c Level-0 table #5: 683273 bytes OK
+2026/09/25-16:44:59.376 570c Delete type=0 #3

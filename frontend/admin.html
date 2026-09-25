@@ -4,8 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — Portfólio Denise</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
-<link rel="stylesheet" href="css/admin.css">
+<link rel="stylesheet" href="css/admin.css?v=admin-20260925-3">
 </head>
 <body>
 
@@ -13,7 +17,7 @@
 <div class="login-screen" id="loginScreen">
   <form class="login-card" id="loginForm">
     <h1><i class="ph-bold ph-lock-key"></i> Painel Admin</h1>
-    <p class="login-sub">Gerencie os projetos do portfólio</p>
+    <p class="login-sub">Gerencie o conteúdo e as imagens do portfólio</p>
     <div class="field">
       <label for="loginUsername">Usuário</label>
       <input type="text" id="loginUsername" required autocomplete="username">
@@ -34,6 +38,10 @@
     <nav class="sidebar-nav">
       <button class="nav-item active" data-tab="projects"><i class="ph ph-briefcase"></i> Projetos</button>
       <button class="nav-item" data-tab="books"><i class="ph ph-book-bookmark"></i> Livros</button>
+      <button class="nav-item" data-tab="publications"><i class="ph ph-graduation-cap"></i> Publicações</button>
+      <button class="nav-item" data-tab="products"><i class="ph ph-first-aid-kit"></i> Produtos educacionais</button>
+      <button class="nav-item" data-tab="about"><i class="ph ph-images"></i> Sobre mim</button>
+      <button class="nav-item" data-tab="career"><i class="ph ph-path"></i> Trajetória</button>
       <button class="nav-item" data-tab="messages"><i class="ph ph-envelope-simple"></i> Mensagens</button>
     </nav>
     <div class="sidebar-footer">
@@ -69,6 +77,62 @@
       </div>
     </section>
 
+    <!-- TAB: IMAGENS SOBRE MIM -->
+    <section id="tabAbout" class="tab-panel" hidden>
+      <header class="content-header">
+        <div>
+          <h2>Imagens de Sobre mim</h2>
+          <p class="content-subtitle">Arraste os cards ou altere o número da ordem. A mudança é salva automaticamente.</p>
+        </div>
+      </header>
+
+      <form class="about-upload-card" id="aboutImageForm">
+        <div class="field">
+          <label for="aboutImageInput">Nova imagem *</label>
+          <input type="file" id="aboutImageInput" accept="image/jpeg,image/png,image/webp,image/gif" required>
+          <span class="crop-file-status" id="aboutCropStatus">Selecione uma imagem para recortar.</span>
+        </div>
+        <div class="field">
+          <label for="aboutImageCaption">Legenda</label>
+          <input type="text" id="aboutImageCaption" maxlength="250" placeholder="Ex: Palestra no encontro de Educação">
+        </div>
+        <div class="field">
+          <label for="aboutImageAlt">Texto alternativo</label>
+          <input type="text" id="aboutImageAlt" maxlength="250" placeholder="Descreva a imagem para acessibilidade">
+        </div>
+        <div class="field field-order">
+          <label for="aboutImageOrder">Ordem</label>
+          <input type="number" id="aboutImageOrder" min="0" value="0">
+        </div>
+        <button class="btn-primary" type="submit"><i class="ph-bold ph-upload-simple"></i> Adicionar imagem</button>
+      </form>
+
+      <div class="about-admin-grid" id="aboutImagesGrid">
+        <p class="empty-row">Carregando...</p>
+      </div>
+    </section>
+
+    <!-- TAB: TRAJETÓRIA -->
+    <section id="tabCareer" class="tab-panel" hidden>
+      <header class="content-header">
+        <div>
+          <h2>Trajetória</h2>
+          <p class="content-subtitle">Edite os marcos da linha do tempo acadêmica e profissional exibida no site.</p>
+        </div>
+        <button class="btn-primary" id="saveCareerBtn" type="button"><i class="ph-bold ph-floppy-disk"></i> Salvar trajetória</button>
+      </header>
+
+      <div class="career-admin-section">
+        <div class="career-admin-heading">
+          <div><h3>Linha do tempo completa</h3><p>A ordem numérica define o caminho exibido no site.</p></div>
+          <button class="btn-outline" id="addTimelineItemBtn" type="button"><i class="ph-bold ph-plus"></i> Adicionar marco</button>
+        </div>
+        <div class="career-editor-list" id="careerTimelineEditor"></div>
+      </div>
+
+      <p class="form-error" id="careerFormError" hidden></p>
+    </section>
+
     <!-- TAB: LIVROS -->
     <section id="tabBooks" class="tab-panel" hidden>
       <header class="content-header">
@@ -89,6 +153,53 @@
           </thead>
           <tbody id="booksTableBody">
             <tr><td colspan="5" class="empty-row">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB: PUBLICAÇÕES -->
+    <section id="tabPublications" class="tab-panel" hidden>
+      <header class="content-header">
+        <h2>Publicações</h2>
+        <button class="btn-primary" id="newPublicationBtn"><i class="ph-bold ph-plus"></i> Nova publicação</button>
+      </header>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Categoria</th>
+              <th>Destaque</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="publicationsTableBody">
+            <tr><td colspan="4" class="empty-row">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB: PRODUTOS EDUCACIONAIS -->
+    <section id="tabProducts" class="tab-panel" hidden>
+      <header class="content-header">
+        <h2>Produtos educacionais</h2>
+        <button class="btn-primary" id="newProductBtn"><i class="ph-bold ph-plus"></i> Novo produto</button>
+      </header>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Categoria</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="productsTableBody">
+            <tr><td colspan="3" class="empty-row">Carregando...</td></tr>
           </tbody>
         </table>
       </div>
@@ -117,6 +228,32 @@
       </div>
     </section>
   </main>
+</div>
+
+<!-- MODAL: RECORTAR IMAGEM DE SOBRE MIM -->
+<div class="modal-overlay" id="imageCropModal" hidden>
+  <div class="modal crop-modal" role="dialog" aria-modal="true" aria-labelledby="cropModalTitle">
+    <header class="modal-header">
+      <div><h3 id="cropModalTitle">Recortar imagem</h3><p class="content-subtitle">Arraste a foto para reposicionar.</p></div>
+      <button class="modal-close" id="cropModalClose" type="button" aria-label="Fechar"><i class="ph ph-x"></i></button>
+    </header>
+    <div class="modal-body">
+      <div class="crop-stage" id="cropStage">
+        <canvas id="cropCanvas" width="800" height="1000" aria-label="Prévia do recorte da imagem"></canvas>
+      </div>
+      <div class="field crop-zoom-field">
+        <label for="cropZoom">Zoom</label>
+        <input id="cropZoom" type="range" min="1" max="3" step="0.01" value="1">
+      </div>
+      <p class="hint">O recorte segue o formato vertical usado na galeria do site.</p>
+      <footer class="modal-footer">
+        <div class="modal-footer-right">
+          <button class="btn-outline" id="cropCancelBtn" type="button">Cancelar</button>
+          <button class="btn-primary" id="cropConfirmBtn" type="button"><i class="ph-bold ph-crop"></i> Usar este recorte</button>
+        </div>
+      </footer>
+    </div>
+  </div>
 </div>
 
 <!-- MODAL: CRIAR/EDITAR PROJETO -->
@@ -236,11 +373,11 @@
         <input type="url" id="bookFieldUrl" placeholder="https://...">
       </div>
 
-      <div class="field" id="bookCoverFieldWrap" hidden>
-        <label>Capa</label>
+      <div class="field" id="bookCoverFieldWrap">
+        <label for="bookCoverInput">Imagem / capa do livro</label>
         <div class="image-gallery" id="bookCoverPreview"></div>
         <input type="file" id="bookCoverInput" accept="image/*">
-        <p class="hint">Salve o livro antes de adicionar a capa.</p>
+        <p class="hint">Para um novo livro, a imagem será enviada junto após salvar.</p>
       </div>
 
       <footer class="modal-footer">
@@ -255,8 +392,99 @@
   </div>
 </div>
 
+<!-- MODAL: CRIAR/EDITAR PUBLICAÇÃO -->
+<div class="modal-overlay" id="publicationModal" hidden>
+  <div class="modal">
+    <header class="modal-header">
+      <h3 id="publicationModalTitle">Nova publicação</h3>
+      <button class="modal-close" id="publicationModalClose"><i class="ph ph-x"></i></button>
+    </header>
+
+    <form id="publicationForm" class="modal-body">
+      <input type="hidden" id="publicationId">
+
+      <div class="field">
+        <label for="publicationFieldTitle">Título *</label>
+        <input type="text" id="publicationFieldTitle" required>
+      </div>
+
+      <div class="field">
+        <label for="publicationFieldKicker">Linha de destaque (categoria · tema)</label>
+        <input type="text" id="publicationFieldKicker" placeholder="Ex: 2026 · Divulgação científica · Saúde">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="publicationFieldCategory">Categoria (usada na busca)</label>
+          <input type="text" id="publicationFieldCategory" placeholder="Ex: Literatura">
+        </div>
+        <div class="field checkbox-field">
+          <label><input type="checkbox" id="publicationFieldFeatured"> Publicação em destaque</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="publicationFieldUrl">Link da publicação</label>
+        <input type="url" id="publicationFieldUrl" placeholder="https://...">
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="btn-outline" id="deletePublicationBtn" hidden>Excluir</button>
+        <div class="modal-footer-right">
+          <button type="button" class="btn-outline" id="publicationCancelBtn">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar</button>
+        </div>
+      </footer>
+      <p class="form-error" id="publicationFormError" hidden></p>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: CRIAR/EDITAR PRODUTO EDUCACIONAL -->
+<div class="modal-overlay" id="productModal" hidden>
+  <div class="modal">
+    <header class="modal-header">
+      <h3 id="productModalTitle">Novo produto</h3>
+      <button class="modal-close" id="productModalClose"><i class="ph ph-x"></i></button>
+    </header>
+
+    <form id="productForm" class="modal-body">
+      <input type="hidden" id="productId">
+
+      <div class="field">
+        <label for="productFieldTitle">Título *</label>
+        <input type="text" id="productFieldTitle" required>
+      </div>
+
+      <div class="field">
+        <label for="productFieldKicker">Linha de destaque</label>
+        <input type="text" id="productFieldKicker" placeholder="Ex: Saúde bucal">
+      </div>
+
+      <div class="field">
+        <label for="productFieldCategory">Categoria (usada na busca)</label>
+        <input type="text" id="productFieldCategory" placeholder="Ex: Educação Infantil">
+      </div>
+
+      <div class="field">
+        <label for="productFieldUrl">Link do material</label>
+        <input type="url" id="productFieldUrl" placeholder="https://...">
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="btn-outline" id="deleteProductBtn" hidden>Excluir</button>
+        <div class="modal-footer-right">
+          <button type="button" class="btn-outline" id="productCancelBtn">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar</button>
+        </div>
+      </footer>
+      <p class="form-error" id="productFormError" hidden></p>
+    </form>
+  </div>
+</div>
+
 <div class="toast" id="toast" hidden></div>
 
-<script src="js/admin.js"></script>
+<script src="js/admin.js?v=admin-20260925-4"></script>
 </body>
 </html>

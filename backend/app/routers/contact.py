@@ -11,11 +11,20 @@ from app import schemas, models
 from app.auth import get_current_admin
 from app.database import get_db
 from app.email_utils import send_contact_email
+from app.rate_limit import rate_limiter
 
 router = APIRouter(prefix="/api/contact", tags=["contact"])
 
+# No máximo 5 mensagens a cada 10 minutos por IP, para conter spam automatizado.
+contact_rate_limit = rate_limiter(max_requests=5, window_seconds=600)
 
-@router.post("", response_model=schemas.ContactOut, status_code=status.HTTP_201_CREATED)
+
+@router.post(
+    "",
+    response_model=schemas.ContactOut,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(contact_rate_limit)],
+)
 def send_contact_message(data: schemas.ContactCreate, db: Session = Depends(get_db)):
     email_sent = send_contact_email(data.name, data.email, data.message)
 

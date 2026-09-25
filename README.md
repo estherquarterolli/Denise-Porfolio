@@ -35,7 +35,13 @@ denise-portfolio/
     │   ├── main.js           # animações GSAP + fetch dos projetos + filtro/busca + contato
     │   └── admin.js          # login JWT + CRUD + upload de imagens
     └── img/
-        └── placeholder-avatar.svg
+        ├── jogue-sementes-capa.jpeg
+        ├── eventos-mosaico.jpeg
+        └── sobre-mim/            # fotos do carrossel da seção "Sobre mim"
+            ├── retrato.jpeg
+            ├── palco.jpeg
+            ├── autografo.jpeg
+            └── retrato-preto.jpeg
 ```
 
 ## Passo a passo para rodar localmente
@@ -74,14 +80,15 @@ admin em `/admin`, e as imagens enviadas em `/uploads/...`.
 - Painel admin: http://localhost:8000/admin
   - Usuário/senha = o que você definiu em `ADMIN_USERNAME` / `ADMIN_PASSWORD` no `.env`
 
-### 4. Substituir a foto e os dados pessoais
+### 4. Gerenciar conteúdo e imagens
 
-- Foto: troque `frontend/img/placeholder-avatar.svg` por uma foto real
-  (ex: `foto.jpg`) e ajuste o `src` de `#heroPhoto` em `index.html`.
-- Textos (bio, formação, redes sociais): estão direto no `index.html`
-  (seções "Sobre" e "Formação") — edite à vontade.
-- Projetos: são 100% gerenciados pelo painel `/admin` (criar, editar, excluir,
-  adicionar/remover imagens).
+- Livros: podem ser criados e editados no painel `/admin`, incluindo envio,
+  troca e remoção da imagem/capa.
+- Sobre mim: a aba própria do painel permite adicionar, ordenar, legendar e
+  remover as imagens exibidas na galeria pública.
+- Projetos: são gerenciados pelo painel (criar, editar, excluir e adicionar imagens).
+- Textos institucionais, publicações e produtos educacionais ficam em
+  `frontend/index.html`.
 
 ## Notas técnicas
 

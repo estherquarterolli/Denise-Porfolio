@@ -28,8 +28,24 @@ class Settings(BaseSettings):
     SMTP_PASSWORD: str = ""
     CONTACT_RECEIVER_EMAIL: str = ""
 
-    # CORS
+    # CORS — aceita uma ou mais origens separadas por vírgula
+    # (ex.: "https://denisesite.com,https://www.denisesite.com")
     FRONTEND_ORIGIN: str = "http://localhost:8000"
+
+    # "production" desliga /docs, /redoc e /openapi.json e restringe o CORS
+    # às origens configuradas acima (sem os localhost de desenvolvimento).
+    ENVIRONMENT: str = "development"
+
+    @property
+    def cors_origins(self) -> list[str]:
+        origins = [o.strip() for o in self.FRONTEND_ORIGIN.split(",") if o.strip()]
+        if self.ENVIRONMENT != "production":
+            origins += ["http://localhost:8000", "http://127.0.0.1:8000"]
+        return origins
+
+    @property
+    def is_production(self) -> bool:
+        return self.ENVIRONMENT == "production"
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 

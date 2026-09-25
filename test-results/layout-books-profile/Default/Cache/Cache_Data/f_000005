@@ -1,0 +1,712 @@
+const API_BASE = "/api";
+
+function escapeHTML(value) {
+  const element = document.createElement("div");
+  element.textContent = value ?? "";
+  return element.innerHTML;
+}
+
+function safeURL(value) {
+  if (!value) return "";
+  try {
+    const url = new URL(value, window.location.origin);
+    return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+  } catch {
+    return "";
+  }
+}
+
+function normalizeSearch(value) {
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("pt-BR");
+}
+
+/* Navegação e progresso de leitura */
+const siteHeader = document.getElementById("siteHeader");
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
+const scrollProgress = document.getElementById("scrollProgress");
+
+function updateScrollUI() {
+  siteHeader.classList.toggle("scrolled", window.scrollY > 20);
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
+  scrollProgress.style.transform = `scaleX(${Math.min(1, Math.max(0, progress))})`;
+}
+
+window.addEventListener("scroll", updateScrollUI, { passive: true });
+updateScrollUI();
+
+menuToggle.addEventListener("click", () => {
+  const open = navLinks.classList.toggle("open");
+  menuToggle.setAttribute("aria-expanded", String(open));
+  menuToggle.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+  menuToggle.innerHTML = `<i class="ph-bold ${open ? "ph-x" : "ph-list"}"></i>`;
+  document.body.classList.toggle("menu-open", open);
+});
+
+navLinks.querySelectorAll("a[href^='#']").forEach((link) => {
+  link.addEventListener("click", () => {
+    navLinks.classList.remove("open");
+    menuToggle.setAttribute("aria-expanded", "false");
+    menuToggle.setAttribute("aria-label", "Abrir menu");
+    menuToggle.innerHTML = '<i class="ph-bold ph-list"></i>';
+    document.body.classList.remove("menu-open");
+  });
+});
+
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    navLinks.querySelectorAll("a[href^='#']").forEach((link) => {
+      link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`);
+    });
+  });
+}, { rootMargin: "-35% 0px -55%", threshold: 0 });
+
+document.querySelectorAll("main section[id]").forEach((section) => sectionObserver.observe(section));
+
+/* Entrada suave dos blocos */
+const revealObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("is-visible");
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: "0px 0px -30px" });
+
+function observeReveals(root = document) {
+  root.querySelectorAll(".reveal:not(.is-visible)").forEach((element) => revealObserver.observe(element));
+}
+observeReveals();
+
+/* Galeria/carrossel da seção Sobre mim */
+const aboutFeatured = document.getElementById("aboutFeatured");
+const aboutMainImage = document.getElementById("aboutMainImage");
+const aboutCaption = document.getElementById("aboutCaption");
+const aboutThumbs = document.getElementById("aboutThumbs");
+const aboutPrev = document.getElementById("aboutPrev");
+const aboutNext = document.getElementById("aboutNext");
+
+const defaultAboutImages = [
+  { image_path: "/img/sobre-mim/d4.png", caption: "Educação que floresce", alt_text: "Denise Ana Oliveira diante de um jardim vertical" },
+  { image_path: "/img/sobre-mim/d3.png", caption: "Cultura, território e encontros", alt_text: "Denise ao lado de uma artista em uma atividade cultural" },
+  { image_path: "/img/sobre-mim/d5.png", caption: "Entre leituras e ideias", alt_text: "Retrato de Denise Ana Oliveira com uma xícara nas mãos" },
+  { image_path: "/img/sobre-mim/autografo.jpeg", caption: "Lançamento de Jogue Sementes", alt_text: "Denise autografando o livro Jogue Sementes" },
+  { image_path: "/img/sobre-mim/palco.jpeg", caption: "Educação, pesquisa e troca de saberes", alt_text: "Denise falando ao microfone em um evento acadêmico" },
+  { image_path: "/img/sobre-mim/retrato.jpeg", caption: "Denise Ana Oliveira", alt_text: "Denise Ana Oliveira usando blazer rosa" },
+];
+
+const ABOUT_AUTOPLAY_MS = 5000;
+
+function renderAboutGallery(images) {
+  const items = images.length ? images : defaultAboutImages;
+  let activeIndex = 0;
+  let autoplayTimer = null;
+
+  function stopAutoplay() {
+    if (autoplayTimer) window.clearInterval(autoplayTimer);
+    autoplayTimer = null;
+  }
+
+  function startAutoplay() {
+    stopAutoplay();
+    if (items.length < 2) return;
+    autoplayTimer = window.setInterval(() => selectImage(activeIndex + 1), ABOUT_AUTOPLAY_MS);
+  }
+
+  function selectImage(index) {
+    activeIndex = (index + items.length) % items.length;
+    const item = items[activeIndex];
+    aboutMainImage.style.opacity = "0";
+    window.setTimeout(() => {
+      aboutMainImage.src = item.image_path;
+      aboutMainImage.alt = item.alt_text || item.caption || "Foto de Denise Ana Oliveira";
+      aboutCaption.textContent = item.caption || "Denise Ana Oliveira";
+      aboutMainImage.style.opacity = "1";
+    }, 140);
+    aboutThumbs.querySelectorAll("button").forEach((button, buttonIndex) => {
+      button.classList.toggle("active", buttonIndex === activeIndex);
+      button.setAttribute("aria-pressed", String(buttonIndex === activeIndex));
+    });
+    startAutoplay();
+  }
+
+  aboutThumbs.innerHTML = items.map((item, index) => `
+    <button class="about-thumb ${index === 0 ? "active" : ""}" type="button" aria-label="Mostrar ${escapeHTML(item.caption || `foto ${index + 1}`)}" aria-pressed="${index === 0}">
+      <img src="${escapeHTML(item.image_path)}" alt="" loading="lazy">
+    </button>
+  `).join("");
+  aboutThumbs.querySelectorAll("button").forEach((button, index) => button.addEventListener("click", () => selectImage(index)));
+
+  if (items.length > 1) {
+    aboutPrev?.addEventListener("click", () => selectImage(activeIndex - 1));
+    aboutNext?.addEventListener("click", () => selectImage(activeIndex + 1));
+    aboutFeatured?.addEventListener("mouseenter", stopAutoplay);
+    aboutFeatured?.addEventListener("mouseleave", startAutoplay);
+
+    let dragStartX = 0;
+    let dragging = false;
+    aboutFeatured?.addEventListener("pointerdown", (event) => {
+      dragging = true;
+      dragStartX = event.clientX;
+    });
+    aboutFeatured?.addEventListener("pointerup", (event) => {
+      if (!dragging) return;
+      dragging = false;
+      const delta = event.clientX - dragStartX;
+      if (Math.abs(delta) > 40) selectImage(activeIndex + (delta < 0 ? 1 : -1));
+    });
+  } else {
+    aboutPrev?.setAttribute("hidden", "");
+    aboutNext?.setAttribute("hidden", "");
+  }
+
+  selectImage(0);
+}
+
+async function fetchAboutImages() {
+  try {
+    const response = await fetch(`${API_BASE}/about-images`);
+    if (!response.ok) throw new Error("Falha ao carregar imagens");
+    renderAboutGallery(await response.json());
+  } catch (error) {
+    console.warn(error);
+    renderAboutGallery(defaultAboutImages);
+  }
+}
+
+/* Trajetória acadêmica e profissional editável pelo painel */
+const careerTimeline = document.getElementById("careerTimeline");
+const careerTimelineWrap = document.getElementById("careerTimelineWrap");
+const careerWorm = document.getElementById("careerWorm");
+const careerWormPath = document.getElementById("careerWormPath");
+const defaultCareerContent = {
+  timeline: [
+    { year: "1994–1998", title: "Magistério", detail: "Curso técnico na Escola Estadual René de Oliveira Barbosa.", order: 0 },
+    { year: "2003–2006", title: "Graduação em Pedagogia", detail: "Universidade Estácio de Sá.", order: 1 },
+    { year: "2004–2018", title: "Da Educação Infantil à alfabetização", detail: "Docência na Educação Infantil na rede privada e, desde 2006, na rede municipal de Duque de Caxias.", order: 2 },
+    { year: "2008–2011", title: "Duas especializações", detail: "Psicomotricidade aplicada à Educação e Gestão Escolar Integrada — Faculdades Integradas de Jacarepaguá.", order: 3 },
+    { year: "2014–2016", title: "Orientação Pedagógica", detail: "Rede municipal de Belford Roxo.", order: 4 },
+    { year: "2016–2017", title: "Mestrado Profissional", detail: "Ensino de Ciências — Instituto Federal do Rio de Janeiro (IFRJ).", order: 5 },
+    { year: "2018", title: "Prêmio AIA-CTS", detail: "Melhor dissertação de mestrado na área científica pela Associação Ibero-americana CTS.", order: 6 },
+    { year: "2018–2023", title: "Doutorado", detail: "Educação em Ciências e Saúde — Universidade Federal do Rio de Janeiro (UFRJ).", order: 7 },
+    { year: "2019–Atual", title: "Orientação Pedagógica em Duque de Caxias", detail: "Coordenação, orientação e acompanhamento da Educação Infantil e do ciclo de alfabetização.", order: 8 },
+    { year: "2019 e 2021", title: "Reconhecimento na rede municipal", detail: "Menção Gente que Faz e Acontece e homenagem pelo incentivo à leitura literária.", order: 9 },
+    { year: "2022–Atual", title: "Gestão da Educação Infantil", detail: "Direção geral de creche e pré-escola na rede municipal de Duque de Caxias.", order: 10 },
+    { year: "2023–Atual", title: "Docência no PPGECS", detail: "Professora do Programa de Pós-graduação em Ensino de Ciências e Saúde da Afya Universidade Unigranrio.", order: 11 },
+    { year: "2024–Atual", title: "Formação docente e PIBID", detail: "Supervisão do PIBID na Unigranrio e atuação no projeto Leitura e Escrita na Educação Infantil em 2024–2025.", order: 12 },
+    { year: "2025–2026", title: "Especialização em Docência na Educação Infantil", detail: "Universidade Federal Rural do Rio de Janeiro (UFRRJ).", order: 13 },
+    { year: "2025", title: "Mérito Acadêmico e Honra ao Mérito STHEM", detail: "Reconhecimentos da Afya Universidade Unigranrio e do XI Fórum Internacional de Inovação Acadêmica.", order: 14 },
+    { year: "2026–Atual", title: "Pesquisa em territórios vulneráveis", detail: "Bolsa de Produtividade Afycionados em projeto sobre infecções respiratórias na infância.", order: 15 },
+  ],
+  highlights: [],
+};
+
+function updateCareerWorm() {
+  if (!careerTimelineWrap || !careerWorm || !careerWormPath) return;
+  const nodes = [...careerTimeline.querySelectorAll(".timeline-node")];
+  const wrapRect = careerTimelineWrap.getBoundingClientRect();
+  const width = careerTimelineWrap.clientWidth;
+  const height = careerTimelineWrap.scrollHeight;
+  careerWorm.setAttribute("viewBox", `0 0 ${width} ${height}`);
+
+  const points = nodes.map((node) => {
+    const rect = node.getBoundingClientRect();
+    return {
+      x: rect.left - wrapRect.left + rect.width / 2,
+      y: rect.top - wrapRect.top + rect.height / 2,
+    };
+  });
+  if (!points.length) {
+    careerWormPath.setAttribute("d", "");
+    return;
+  }
+
+  let path = `M ${points[0].x} ${points[0].y}`;
+  for (let index = 1; index < points.length; index += 1) {
+    const previous = points[index - 1];
+    const current = points[index];
+    const middleY = (previous.y + current.y) / 2;
+    path += ` C ${previous.x} ${middleY}, ${current.x} ${middleY}, ${current.x} ${current.y}`;
+  }
+  careerWormPath.setAttribute("d", path);
+}
+
+let careerWormFrame = 0;
+function scheduleCareerWorm() {
+  cancelAnimationFrame(careerWormFrame);
+  careerWormFrame = requestAnimationFrame(updateCareerWorm);
+}
+
+function renderCareer(content) {
+  const timeline = [...(content.timeline || [])].sort((a, b) => a.order - b.order);
+  careerTimeline.innerHTML = timeline.map((item) => `
+    <li class="timeline-item">
+      <span class="timeline-node" aria-hidden="true"></span>
+      <span class="timeline-year">${escapeHTML(item.year)}</span>
+      <strong>${escapeHTML(item.title)}</strong>
+      <p>${escapeHTML(item.detail)}</p>
+    </li>
+  `).join("");
+  scheduleCareerWorm();
+}
+
+window.addEventListener("resize", scheduleCareerWorm, { passive: true });
+if ("ResizeObserver" in window && careerTimelineWrap) {
+  new ResizeObserver(scheduleCareerWorm).observe(careerTimelineWrap);
+}
+document.fonts?.ready.then(scheduleCareerWorm);
+
+async function fetchCareer() {
+  try {
+    const response = await fetch(`${API_BASE}/career`);
+    if (!response.ok) throw new Error("Falha ao carregar trajetória");
+    renderCareer(await response.json());
+  } catch (error) {
+    console.warn(error);
+    renderCareer(defaultCareerContent);
+  }
+}
+
+/* Livros */
+const livrosGrid = document.getElementById("livrosGrid");
+const livrosEmpty = document.getElementById("livrosEmpty");
+const defaultBooks = [{
+  title: "Jogue Sementes",
+  description: "Uma história sobre crianças, território, plantio e transformação coletiva. O gesto de semear abre conversas sobre natureza, participação e esperança.",
+  year: "2025",
+  publisher: "Mar Editora",
+  cover_image: "/img/joge-sementes-emoldurada-capa.png",
+  external_url: "https://www.mareditora.com/product-page/jogue-sementes",
+}];
+
+function bookCardHTML(book) {
+  const link = safeURL(book.external_url);
+  const featuredClass = normalizeSearch(book.title) === "jogue sementes" ? " book-featured" : "";
+  const cover = book.cover_image
+    ? `<img src="${escapeHTML(book.cover_image)}" alt="Capa ou imagem do livro ${escapeHTML(book.title)}" loading="lazy">`
+    : '<div class="no-cover" aria-hidden="true"><i class="ph ph-book-open-text"></i></div>';
+  return `
+    <article class="book-card${featuredClass} reveal">
+      <div class="book-cover">${cover}</div>
+      <div class="book-body">
+        <span class="book-year">${escapeHTML(book.year || "Livro infantil")}</span>
+        <h3>${escapeHTML(book.title)}</h3>
+        ${book.publisher ? `<span class="book-publisher">${escapeHTML(book.publisher)}</span>` : ""}
+        <p class="book-desc">${escapeHTML(book.description)}</p>
+        ${link ? `<a class="book-link" href="${link}" target="_blank" rel="noopener">Conheça o livro <i class="ph-bold ph-arrow-up-right"></i></a>` : ""}
+      </div>
+    </article>`;
+}
+
+function renderBooks(books) {
+  const items = books.length ? books : defaultBooks;
+  livrosEmpty.hidden = true;
+  livrosGrid.innerHTML = items.map(bookCardHTML).join("");
+  observeReveals(livrosGrid);
+}
+
+async function fetchBooks() {
+  try {
+    const response = await fetch(`${API_BASE}/books`);
+    if (!response.ok) throw new Error("Falha ao carregar livros");
+    renderBooks(await response.json());
+  } catch (error) {
+    console.warn(error);
+    renderBooks(defaultBooks);
+  }
+}
+
+/* Permite arrastar (mouse) qualquer carrossel horizontal, além do toque nativo */
+function enableDragScroll(viewport) {
+  let isDown = false;
+  let startX = 0;
+  let startScroll = 0;
+  let moved = false;
+
+  viewport.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    isDown = true;
+    moved = false;
+    startX = event.clientX;
+    startScroll = viewport.scrollLeft;
+    viewport.classList.add("dragging");
+  });
+
+  window.addEventListener("pointermove", (event) => {
+    if (!isDown) return;
+    const delta = event.clientX - startX;
+    if (Math.abs(delta) > 4) moved = true;
+    viewport.scrollLeft = startScroll - delta;
+  });
+
+  function endDrag() {
+    if (!isDown) return;
+    isDown = false;
+    viewport.classList.remove("dragging");
+    if (moved) {
+      const suppressClick = (clickEvent) => {
+        clickEvent.preventDefault();
+        clickEvent.stopPropagation();
+      };
+      viewport.addEventListener("click", suppressClick, { capture: true, once: true });
+    }
+  }
+
+  window.addEventListener("pointerup", endDrag);
+  window.addEventListener("pointercancel", endDrag);
+}
+
+function scrollCarouselStep(viewport, dir) {
+  if (!viewport) return;
+  const card = viewport.querySelector(".carousel-track > *");
+  const step = card ? card.getBoundingClientRect().width + 22 : viewport.clientWidth * 0.8;
+  viewport.scrollBy({ left: dir * step * 2, behavior: "smooth" });
+}
+
+function setupCarouselNav(viewport, prevBtn, nextBtn) {
+  if (!viewport) return;
+  prevBtn?.addEventListener("click", () => scrollCarouselStep(viewport, -1));
+  nextBtn?.addEventListener("click", () => scrollCarouselStep(viewport, 1));
+  enableDragScroll(viewport);
+}
+
+function uniqueCategories(items) {
+  return [...new Set(items.map((item) => String(item.category || "").trim()).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, "pt-BR"));
+}
+
+function renderFilterChips(container, items, activeCategory, onSelect) {
+  if (!container) return;
+  container.innerHTML = ["", ...uniqueCategories(items)].map((category) => {
+    const active = category === activeCategory;
+    return `<button class="filter-chip${active ? " active" : ""}" type="button" data-category="${escapeHTML(category)}" aria-pressed="${active}">${escapeHTML(category || "Todos")}</button>`;
+  }).join("");
+  container.querySelectorAll(".filter-chip").forEach((button) => {
+    button.addEventListener("click", () => onSelect(button.dataset.category || ""));
+  });
+}
+
+/* Projetos — um único carrossel, com busca */
+const projetosViewport = document.getElementById("projetosViewport");
+const projetosTrack = document.getElementById("projetosTrack");
+const projetosEmpty = document.getElementById("projetosEmpty");
+const searchInput = document.getElementById("searchInput");
+const projetosPrev = document.getElementById("projetosPrev");
+const projetosNext = document.getElementById("projetosNext");
+const projectFilterChips = document.getElementById("projectFilterChips");
+const defaultProjects = [
+  {
+    title: "Determinantes socioambientais das infecções respiratórias na infância",
+    description: "Investiga a relação entre condições domiciliares, vulnerabilidade social e a recorrência de infecções respiratórias em crianças atendidas na Atenção Primária à Saúde.",
+    category: "Pesquisa",
+    tech_stack: "Saúde Infantil, Epidemiologia Social, Territórios Vulneráveis",
+    project_date: "2026 – Atual",
+    status: "em_andamento",
+  },
+  {
+    title: "Determinantes sociais da saúde infantil em creches públicas",
+    description: "Analisa condições de saúde, estado vacinal, doenças recorrentes e acesso aos serviços públicos entre crianças matriculadas em creches.",
+    category: "Pesquisa",
+    tech_stack: "Educação Infantil, Saúde Pública, Vulnerabilidade Social",
+    project_date: "2025 – Atual",
+    status: "em_andamento",
+  },
+  {
+    title: "Questões sociocientíficas nas Ciências e na Saúde",
+    description: "Articula práticas, discursos e formação crítica para discutir ciência, saúde pública e desafios contemporâneos no ensino.",
+    category: "Pesquisa",
+    tech_stack: "CTS, Formação Docente, Ensino de Ciências",
+    project_date: "2024 – Atual",
+    status: "em_andamento",
+  },
+  {
+    title: "Entrelaçando à Escola",
+    description: "Aproxima universidade e Educação Básica por meio de experiências científicas, interdisciplinares e vinculadas à relação entre seres humanos e natureza.",
+    category: "Extensão",
+    tech_stack: "Escola, Universidade, Educação Ambiental",
+    project_date: "2023 – Atual",
+    status: "em_andamento",
+  },
+  {
+    title: "Formação de professores na contemporaneidade",
+    description: "Investiga estratégias para a formação inicial e continuada de professores em diálogo com escolas, universidades e museus de ciência.",
+    category: "Ensino",
+    tech_stack: "Formação Docente, Práticas Pedagógicas",
+    project_date: "2023 – Atual",
+    status: "em_andamento",
+  },
+  {
+    title: "Divulgação científica: ciência ao alcance de todos",
+    description: "Desenvolve dispositivos analógicos e digitais para aproximar produções acadêmico-científicas de públicos diversos.",
+    category: "Extensão",
+    tech_stack: "Divulgação Científica, Mídias Digitais",
+    project_date: "2023 – Atual",
+    status: "em_andamento",
+  },
+];
+let projects = [...defaultProjects];
+let activeProjectCategory = "";
+
+function updateProjectFilters() {
+  renderFilterChips(projectFilterChips, projects, activeProjectCategory, (category) => {
+    activeProjectCategory = category;
+    updateProjectFilters();
+    renderProjects();
+  });
+}
+
+function projectCardHTML(project) {
+  const link = safeURL(project.demo_url || project.repo_url);
+  return `
+    <article class="project-card">
+      <span class="project-category">${escapeHTML(project.category || "Projeto")}</span>
+      <h3>${escapeHTML(project.title)}</h3>
+      <p>${escapeHTML(project.description)}</p>
+      <div class="project-meta">
+        <span class="project-date">${escapeHTML(project.project_date || (project.status === "concluido" ? "Concluído" : "Em andamento"))}</span>
+        ${link ? `<a class="project-link" href="${link}" target="_blank" rel="noopener" aria-label="Abrir ${escapeHTML(project.title)}"><i class="ph-bold ph-arrow-up-right"></i></a>` : ""}
+      </div>
+    </article>`;
+}
+
+function renderProjects() {
+  const query = normalizeSearch(searchInput.value.trim());
+  const filtered = projects.filter((project) => {
+    const haystack = normalizeSearch(`${project.title} ${project.description} ${project.tech_stack || ""} ${project.category || ""}`);
+    const matchesQuery = !query || haystack.includes(query);
+    const matchesCategory = !activeProjectCategory || project.category === activeProjectCategory;
+    return matchesQuery && matchesCategory;
+  });
+  projetosTrack.innerHTML = filtered.map(projectCardHTML).join("");
+  projetosEmpty.hidden = filtered.length > 0;
+  observeReveals(projetosTrack);
+}
+
+searchInput.addEventListener("input", renderProjects);
+updateProjectFilters();
+setupCarouselNav(projetosViewport, projetosPrev, projetosNext);
+
+async function fetchProjects() {
+  try {
+    const response = await fetch(`${API_BASE}/projects`);
+    if (!response.ok) throw new Error("Falha ao carregar projetos");
+    const loadedProjects = await response.json();
+    projects = Array.isArray(loadedProjects) && loadedProjects.length ? loadedProjects : [...defaultProjects];
+    activeProjectCategory = "";
+    updateProjectFilters();
+    renderProjects();
+  } catch (error) {
+    console.warn(error);
+    projects = [...defaultProjects];
+    activeProjectCategory = "";
+    updateProjectFilters();
+    renderProjects();
+  }
+}
+
+/* Cartão compartilhado por Publicações e Produtos educacionais */
+function linkCardHTML(item, { extraClass = "", actionLabel = "Acessar" } = {}) {
+  const link = safeURL(item.external_url);
+  const classes = `link-card reveal ${extraClass} ${item.featured ? "publication-featured" : ""}`.trim();
+  const inner = `
+      ${item.kicker ? `<span class="card-kicker">${escapeHTML(item.kicker)}</span>` : ""}
+      <h3>${escapeHTML(item.title)}</h3>
+      <span class="card-action">${escapeHTML(actionLabel)} <i class="ph-bold ph-arrow-up-right"></i></span>`;
+  return link
+    ? `<a class="${classes}" href="${link}" target="_blank" rel="noopener">${inner}</a>`
+    : `<div class="${classes}">${inner}</div>`;
+}
+
+/* Publicações — carrossel com busca */
+const publicationViewport = document.getElementById("publicationViewport");
+const publicationTrack = document.getElementById("publicationTrack");
+const publicationEmpty = document.getElementById("publicationEmpty");
+const publicationSearchInput = document.getElementById("publicationSearchInput");
+const publicationPrev = document.getElementById("publicationPrev");
+const publicationNext = document.getElementById("publicationNext");
+const publicationFilterChips = document.getElementById("publicationFilterChips");
+
+const defaultPublications = [
+  { title: "Textos de divulgação científica para crianças: potencialidades pedagógicas, mediações docentes e lacunas em saúde", kicker: "2026 · Divulgação científica · Saúde", category: "Divulgação científica", external_url: "https://doi.org/10.21439/2965-6753.v7.e2026002", featured: true },
+  { title: "Concepções de limpo e sujo para crianças da pré-escola", kicker: "Educação Infantil · Saúde", category: "Educação Infantil", external_url: "https://www.revistacenarios.com/_files/ugd/3ef850_3791d974df6e4ca2815a74e5ce13878c.pdf?index=true" },
+  { title: "Oficina sobre métodos contraceptivos e sexualidade no Ensino Fundamental", kicker: "Saúde · Adolescência", category: "Saúde", external_url: "https://ojs.studiespublicacoes.com.br/ojs/index.php/cadped/article/view/14107" },
+  { title: "Da narrativa literária à produção textual coletiva", kicker: "Ensino de Ciências · Literatura", category: "Literatura", external_url: "https://periodicos.ifsul.edu.br/thema/pt_BR/article/view/451" },
+  { title: "Das sequências didáticas à produção literária", kicker: "Horta escolar · Literatura", category: "Educação ambiental", external_url: "https://revistas.ifes.edu.br/index.php/dect/en/article/view/1089" },
+  { title: "A contação de história como estratégia para o ensino de ciências", kicker: "Contação de histórias · Ciências", category: "Ensino de Ciências", external_url: "https://ojs.upf.br/index.php/rbecm/en/article/view/11281" },
+  { title: "Textos de divulgação científica para crianças", kicker: "Divulgação científica · Infâncias", category: "Divulgação científica", external_url: "https://revistarede.ifce.edu.br/ojs/index.php/rede/article/view/161" },
+  { title: "Educação alimentar e nutricional como política pública nacional", kicker: "Alimentação · Políticas públicas", category: "Saúde", external_url: "https://revistadaanintersh.org/index.php/anintersh/article/view/119" },
+  { title: "Representações discursivas sobre questões sociocientíficas em Guerra no Rio", kicker: "Literatura infantil · Água", category: "Literatura", external_url: "https://periodicorease.pro.br/rease/article/view/18896" },
+  { title: "Tendências em pesquisas na aproximação da literatura infantil ao ensino de ciências", kicker: "Revisão · Ensino de Ciências", category: "Ensino de Ciências", external_url: "https://publicacoes.unigranrio.edu.br/recm/article/view/5610" },
+  { title: "A linguagem literária na textualização de discursos sociocientíficos", kicker: "Linguagem · Questões hídricas", category: "Literatura", external_url: "https://periodicos.ifsul.edu.br/thema/pt_BR/article/view/3128" },
+];
+let publications = [...defaultPublications];
+let activePublicationCategory = "";
+
+function updatePublicationFilters() {
+  renderFilterChips(publicationFilterChips, publications, activePublicationCategory, (category) => {
+    activePublicationCategory = category;
+    updatePublicationFilters();
+    renderPublications();
+  });
+}
+
+function publicationCardHTML(pub) {
+  return linkCardHTML(pub, { actionLabel: pub.featured ? "Acessar pelo DOI" : "Ler publicação" });
+}
+
+function renderPublications() {
+  const query = normalizeSearch(publicationSearchInput.value.trim());
+  const filtered = publications.filter((pub) => {
+    const matchesQuery = !query || normalizeSearch(`${pub.title} ${pub.kicker || ""} ${pub.category || ""}`).includes(query);
+    const matchesCategory = !activePublicationCategory || pub.category === activePublicationCategory;
+    return matchesQuery && matchesCategory;
+  });
+  publicationTrack.innerHTML = filtered.map(publicationCardHTML).join("");
+  publicationEmpty.hidden = filtered.length > 0;
+  observeReveals(publicationTrack);
+}
+
+publicationSearchInput.addEventListener("input", renderPublications);
+updatePublicationFilters();
+setupCarouselNav(publicationViewport, publicationPrev, publicationNext);
+
+async function fetchPublications() {
+  try {
+    const response = await fetch(`${API_BASE}/publications`);
+    if (!response.ok) throw new Error("Falha ao carregar publicações");
+    const loaded = await response.json();
+    publications = Array.isArray(loaded) && loaded.length ? loaded : [...defaultPublications];
+    activePublicationCategory = "";
+    updatePublicationFilters();
+    renderPublications();
+  } catch (error) {
+    console.warn(error);
+    publications = [...defaultPublications];
+    activePublicationCategory = "";
+    updatePublicationFilters();
+    renderPublications();
+  }
+}
+
+/* Produtos educacionais — carrossel com busca */
+const productViewport = document.getElementById("productViewport");
+const productTrack = document.getElementById("productTrack");
+const productEmpty = document.getElementById("productEmpty");
+const productSearchInput = document.getElementById("productSearchInput");
+const productPrev = document.getElementById("productPrev");
+const productNext = document.getElementById("productNext");
+const productFilterChips = document.getElementById("productFilterChips");
+
+const defaultProducts = [
+  { title: "Dona Seringa e a Turma dos Super Protetores", kicker: "Saúde das crianças", category: "Saúde infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1190834" },
+  { title: "Trabalhando com Projetos: experiências com microbiologia", kicker: "Educação Infantil", category: "Educação Infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1190833" },
+  { title: "Os Super Atletas da Saúde — O Mistério do Sorriso Campeão", kicker: "Saúde bucal", category: "Saúde infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1174236" },
+  { title: "Score Medsense: desvendando emoções na formação médica", kicker: "Formação médica", category: "Educação médica", external_url: "https://educapes.capes.gov.br/handle/capes/971694" },
+  { title: "Guia de acompanhamento alimentar na creche", kicker: "Educação alimentar", category: "Educação Infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1190832" },
+  { title: "Além das Cicatrizes: protocolo de escuta, cuidado e intervenção", kicker: "Saúde mental", category: "Saúde mental", external_url: "https://educapes.capes.gov.br/handle/capes/1190904" },
+  { title: "Autosserviço como Prática Pedagógica na Pré-Escola", kicker: "Autonomia infantil", category: "Educação Infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1174253" },
+  { title: "Dor Abdominal no Internato de Medicina de Emergência", kicker: "Educação médica", category: "Educação médica", external_url: "https://educapes.capes.gov.br/handle/capes/1190528" },
+];
+let products = [...defaultProducts];
+let activeProductCategory = "";
+
+function updateProductFilters() {
+  renderFilterChips(productFilterChips, products, activeProductCategory, (category) => {
+    activeProductCategory = category;
+    updateProductFilters();
+    renderProducts();
+  });
+}
+
+function productCardHTML(product) {
+  return linkCardHTML(product, { extraClass: "product-card", actionLabel: "Acessar material" });
+}
+
+function renderProducts() {
+  const query = normalizeSearch(productSearchInput.value.trim());
+  const filtered = products.filter((product) => {
+    const matchesQuery = !query || normalizeSearch(`${product.title} ${product.kicker || ""} ${product.category || ""}`).includes(query);
+    const matchesCategory = !activeProductCategory || product.category === activeProductCategory;
+    return matchesQuery && matchesCategory;
+  });
+  productTrack.innerHTML = filtered.map(productCardHTML).join("");
+  productEmpty.hidden = filtered.length > 0;
+  observeReveals(productTrack);
+}
+
+productSearchInput.addEventListener("input", renderProducts);
+updateProductFilters();
+setupCarouselNav(productViewport, productPrev, productNext);
+
+async function fetchProducts() {
+  try {
+    const response = await fetch(`${API_BASE}/products`);
+    if (!response.ok) throw new Error("Falha ao carregar produtos educacionais");
+    const loaded = await response.json();
+    products = Array.isArray(loaded) && loaded.length ? loaded : [...defaultProducts];
+    activeProductCategory = "";
+    updateProductFilters();
+    renderProducts();
+  } catch (error) {
+    console.warn(error);
+    products = [...defaultProducts];
+    activeProductCategory = "";
+    updateProductFilters();
+    renderProducts();
+  }
+}
+
+/* Formulário de contato */
+const contactForm = document.getElementById("contactForm");
+const contactSubmit = document.getElementById("contactSubmit");
+const formFeedback = document.getElementById("formFeedback");
+
+contactForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const originalContent = contactSubmit.innerHTML;
+  contactSubmit.disabled = true;
+  contactSubmit.textContent = "Enviando…";
+  formFeedback.hidden = true;
+
+  try {
+    const response = await fetch(`${API_BASE}/contact`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: document.getElementById("name").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        message: document.getElementById("message").value.trim(),
+      }),
+    });
+    if (!response.ok) {
+      const payload = await response.json().catch(() => ({}));
+      throw new Error(payload.detail || "Não foi possível enviar a mensagem.");
+    }
+    contactForm.reset();
+    formFeedback.textContent = "Mensagem enviada com sucesso. Obrigada pelo contato!";
+    formFeedback.className = "form-feedback success";
+  } catch (error) {
+    formFeedback.textContent = error.message || "Não foi possível enviar. Tente novamente.";
+    formFeedback.className = "form-feedback error";
+  } finally {
+    formFeedback.hidden = false;
+    contactSubmit.disabled = false;
+    contactSubmit.innerHTML = originalContent;
+  }
+});
+
+document.getElementById("year").textContent = new Date().getFullYear();
+fetchAboutImages();
+fetchCareer();
+fetchBooks();
+renderProjects();
+fetchProjects();
+renderPublications();
+fetchPublications();
+renderProducts();
+fetchProducts();

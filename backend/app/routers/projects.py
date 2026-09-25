@@ -3,8 +3,6 @@ Rotas de projetos:
 - Públicas: listar, buscar/filtrar, ver detalhe, listar categorias.
 - Protegidas (JWT admin): criar, editar, remover, upload/remoção de imagens.
 """
-import os
-import uuid
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File, status
@@ -12,12 +10,10 @@ from sqlalchemy.orm import Session
 
 from app import crud, schemas
 from app.auth import get_current_admin
-from app.config import settings
 from app.database import get_db
+from app.uploads import delete_uploaded_file, save_image_upload
 
 router = APIRouter(prefix="/api/projects", tags=["projects"])
-
-ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
 
 
 # ---------- Rotas públicas ----------
@@ -90,9 +86,7 @@ def delete_project(
 
     # Remove os arquivos de imagem do disco também
     for image in project.images:
-        path = os.path.join(settings.UPLOAD_DIR, os.path.basename(image.image_path))
-        if os.path.exists(path):
-            os.remove(path)
+        delete_uploaded_file(image.image_path)
 
     crud.delete_project(db, project)
 
@@ -113,26 +107,7 @@ async def upload_project_image(
     if not project:
         raise HTTPException(status_code=404, detail="Projeto não encontrado")
 
-    if file.content_type not in ALLOWED_IMAGE_TYPES:
-        raise HTTPException(status_code=400, detail="Tipo de arquivo não permitido")
-
-    contents = await file.read()
-    max_bytes = settings.MAX_UPLOAD_SIZE_MB * 1024 * 1024
-    if len(contents) > max_bytes:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Arquivo maior que {settings.MAX_UPLOAD_SIZE_MB}MB",
-        )
-
-    os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
-    ext = os.path.splitext(file.filename or "")[1] or ".jpg"
-    filename = f"{uuid.uuid4().hex}{ext}"
-    filepath = os.path.join(settings.UPLOAD_DIR, filename)
-
-    with open(filepath, "wb") as f:
-        f.write(contents)
-
-    relative_path = f"/{settings.UPLOAD_DIR}/{filename}"
+    relative_path = await save_image_upload(file)
     return crud.add_project_image(db, project_id, relative_path, order)
 
 
@@ -147,8 +122,5 @@ def delete_project_image(
     if not image or image.project_id != project_id:
         raise HTTPException(status_code=404, detail="Imagem não encontrada")
 
-    path = os.path.join(settings.UPLOAD_DIR, os.path.basename(image.image_path))
-    if os.path.exists(path):
-        os.remove(path)
-
+    delete_uploaded_file(image.image_path)
     crud.delete_project_image(db, image)

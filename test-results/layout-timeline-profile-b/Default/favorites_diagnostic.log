@@ -1,0 +1,18 @@
+2026-09-25 19:44:56.807: [INFO] CurrentProfilePath: C:\Users\Administrator\Documents\GitHub\Denise-Porfolio\test-results\layout-timeline-profile-b\Default
+2026-09-25 19:44:56.807: [INFO] Profiles total count: 1
+2026-09-25 19:44:56.807: [INFO] Profile: name=Perfil 1 path=C:\Users\Administrator\Documents\GitHub\Denise-Porfolio\test-results\layout-timeline-profile-b\Default lastActive=2026-09-25T19:44:56.769Z
+2026-09-25 19:44:56.807: [INFO] LastUsedProfileDir: C:\Users\Administrator\Documents\GitHub\Denise-Porfolio\test-results\layout-timeline-profile-b\Default
+2026-09-25 19:44:56.807: [INFO] MostRecentlyActiveProfile: name=Perfil 1 path=C:\Users\Administrator\Documents\GitHub\Denise-Porfolio\test-results\layout-timeline-profile-b\Default lastActive=2026-09-25T19:44:56.769Z
+2026-09-25 19:44:56.807: [INFO] OnDoneLoading sync enabled: 0
+2026-09-25 19:44:56.807: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-25 19:44:56.807: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-25 19:44:56.807: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-25 19:44:56.948: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-25 19:44:57.217: [INFO] VisibilityChanged: 0
+2026-09-25 19:44:58.887: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-25 19:44:58.894: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-25 19:44:58.897: [INFO] Primary account changed.
+2026-09-25 19:44:58.897: [INFO] OnPrimaryAccountChanged PrimaryAccountChangeEvent::Type::kSet
+2026-09-25 19:44:58.915: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-25 19:44:58.939: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-25 19:44:59.829: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
