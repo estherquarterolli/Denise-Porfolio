@@ -449,20 +449,20 @@ imageUploadInput.addEventListener("change", async () => {
 let currentBooks = [];
 
 async function loadBooks() {
-  booksTableBody.innerHTML = `<tr><td colspan="5" class="empty-row">Carregando...</td></tr>`;
+  booksTableBody.innerHTML = `<tr><td colspan="6" class="empty-row">Carregando...</td></tr>`;
   try {
     const res = await apiFetch("/books");
     const books = await res.json();
     currentBooks = books;
     renderBooksTable(books);
   } catch (err) {
-    booksTableBody.innerHTML = `<tr><td colspan="5" class="empty-row">${err.message}</td></tr>`;
+    booksTableBody.innerHTML = `<tr><td colspan="6" class="empty-row">${err.message}</td></tr>`;
   }
 }
 
 function renderBooksTable(books) {
   if (!books.length) {
-    booksTableBody.innerHTML = `<tr><td colspan="5" class="empty-row">Nenhum livro cadastrado ainda. Clique em "Novo livro".</td></tr>`;
+    booksTableBody.innerHTML = `<tr><td colspan="6" class="empty-row">Nenhum livro cadastrado ainda. Clique em "Novo livro".</td></tr>`;
     return;
   }
 
@@ -478,6 +478,7 @@ function renderBooksTable(books) {
           <td><strong>${escapeHTML(b.title)}</strong></td>
           <td>${escapeHTML(b.year || "—")}</td>
           <td>${escapeHTML(b.publisher || "—")}</td>
+          <td>${b.tag ? `<span class="badge content-tag">${escapeHTML(b.tag)}</span>` : "—"}</td>
           <td>
             <div class="row-actions">
               <button class="icon-btn edit-book-btn" title="Editar"><i class="ph ph-pencil-simple"></i></button>
@@ -523,6 +524,7 @@ function openBookModal(book = null) {
     document.getElementById("bookFieldYear").value = book.year || "";
     document.getElementById("bookFieldPublisher").value = book.publisher || "";
     document.getElementById("bookFieldUrl").value = book.external_url || "";
+    document.getElementById("bookFieldTag").value = book.tag || "";
 
     deleteBookBtn.hidden = false;
     renderBookCoverPreview(book.cover_image);
@@ -561,6 +563,7 @@ bookForm.addEventListener("submit", async (e) => {
     year: document.getElementById("bookFieldYear").value.trim() || null,
     publisher: document.getElementById("bookFieldPublisher").value.trim() || null,
     external_url: document.getElementById("bookFieldUrl").value.trim() || null,
+    tag: document.getElementById("bookFieldTag").value.trim() || null,
   };
 
   const id = document.getElementById("bookId").value;
@@ -846,30 +849,34 @@ const productModalClose = document.getElementById("productModalClose");
 const productCancelBtn = document.getElementById("productCancelBtn");
 const deleteProductBtn = document.getElementById("deleteProductBtn");
 const productFormError = document.getElementById("productFormError");
+const productImagePreview = document.getElementById("productImagePreview");
+const productImageInput = document.getElementById("productImageInput");
 
 let currentProducts = [];
 let editingProduct = null;
 
 async function loadProducts() {
-  productsTableBody.innerHTML = `<tr><td colspan="3" class="empty-row">Carregando...</td></tr>`;
+  productsTableBody.innerHTML = `<tr><td colspan="5" class="empty-row">Carregando...</td></tr>`;
   try {
     const res = await apiFetch("/products");
     currentProducts = await res.json();
     renderProductsTable();
   } catch (err) {
-    productsTableBody.innerHTML = `<tr><td colspan="3" class="empty-row">${err.message}</td></tr>`;
+    productsTableBody.innerHTML = `<tr><td colspan="5" class="empty-row">${err.message}</td></tr>`;
   }
 }
 
 function renderProductsTable() {
   if (!currentProducts.length) {
-    productsTableBody.innerHTML = `<tr><td colspan="3" class="empty-row">Nenhum produto cadastrado ainda. Clique em "Novo produto".</td></tr>`;
+    productsTableBody.innerHTML = `<tr><td colspan="5" class="empty-row">Nenhum produto cadastrado ainda. Clique em "Novo produto".</td></tr>`;
     return;
   }
   productsTableBody.innerHTML = currentProducts.map((p) => `
     <tr data-id="${p.id}">
+      <td>${p.image_path ? `<img class="thumb" src="${escapeHTML(p.image_path)}" alt="">` : '<div class="thumb-placeholder"><i class="ph ph-image"></i></div>'}</td>
       <td><strong>${escapeHTML(p.title)}</strong></td>
       <td>${escapeHTML(p.category || "—")}</td>
+      <td>${p.tag ? `<span class="badge content-tag">${escapeHTML(p.tag)}</span>` : "—"}</td>
       <td>
         <div class="row-actions">
           <button class="icon-btn edit-product-btn" title="Editar"><i class="ph ph-pencil-simple"></i></button>
@@ -907,11 +914,14 @@ function openProductModal(product = null) {
     document.getElementById("productFieldKicker").value = product.kicker || "";
     document.getElementById("productFieldCategory").value = product.category || "";
     document.getElementById("productFieldUrl").value = product.external_url || "";
+    document.getElementById("productFieldTag").value = product.tag || "";
     deleteProductBtn.hidden = false;
+    renderProductImagePreview(product.image_path);
   } else {
     productModalTitle.textContent = "Novo produto";
     document.getElementById("productId").value = "";
     deleteProductBtn.hidden = true;
+    renderProductImagePreview(null);
   }
   productModal.hidden = false;
 }
@@ -935,6 +945,7 @@ productForm.addEventListener("submit", async (e) => {
     kicker: document.getElementById("productFieldKicker").value.trim() || null,
     category: document.getElementById("productFieldCategory").value.trim() || null,
     external_url: document.getElementById("productFieldUrl").value.trim() || null,
+    tag: document.getElementById("productFieldTag").value.trim() || null,
   };
 
   const id = document.getElementById("productId").value;
@@ -949,6 +960,11 @@ productForm.addEventListener("submit", async (e) => {
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
       throw new Error(data.detail || "Erro ao salvar produto");
+    }
+    let saved = await res.json();
+    const pendingImage = productImageInput.files[0];
+    if (pendingImage && (!isEdit || saved.image_path !== editingProduct?.image_path)) {
+      saved = await uploadProductImage(saved.id, pendingImage);
     }
     showToast(isEdit ? "Produto atualizado!" : "Produto criado!");
     closeProductModal();
@@ -976,6 +992,72 @@ async function deleteProduct(id) {
     showToast(err.message, "error");
   }
 }
+
+function renderProductImagePreview(imagePath) {
+  if (!imagePath) {
+    productImagePreview.innerHTML = `<p class="hint">Nenhuma imagem ainda.</p>`;
+    return;
+  }
+  productImagePreview.innerHTML = `
+    <div class="img-item">
+      <img src="${escapeHTML(imagePath)}" alt="">
+      ${editingProduct ? '<button type="button" class="remove-product-image" title="Remover imagem"><i class="ph ph-x"></i></button>' : ""}
+    </div>
+  `;
+}
+
+async function uploadProductImage(productId, file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  const res = await apiFetch(`/products/${productId}/image`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: formData,
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.detail || "Erro ao enviar imagem");
+  }
+  return res.json();
+}
+
+productImageInput.addEventListener("change", async () => {
+  if (!productImageInput.files.length) return;
+  const file = productImageInput.files[0];
+  if (!editingProduct) {
+    renderProductImagePreview(URL.createObjectURL(file));
+    return;
+  }
+
+  try {
+    const updated = await uploadProductImage(editingProduct.id, file);
+    editingProduct.image_path = updated.image_path;
+    renderProductImagePreview(updated.image_path);
+    productImageInput.value = "";
+    loadProducts();
+    showToast("Imagem do produto atualizada!");
+  } catch (err) {
+    showToast(err.message, "error");
+  }
+});
+
+productImagePreview.addEventListener("click", async (event) => {
+  const button = event.target.closest(".remove-product-image");
+  if (!button || !editingProduct) return;
+  try {
+    const res = await apiFetch(`/products/${editingProduct.id}/image`, {
+      method: "DELETE",
+      headers: authHeaders(),
+    });
+    if (!res.ok) throw new Error("Erro ao remover imagem");
+    editingProduct.image_path = null;
+    renderProductImagePreview(null);
+    loadProducts();
+    showToast("Imagem removida.");
+  } catch (err) {
+    showToast(err.message, "error");
+  }
+});
 
 /* =========================================================
    IMAGENS DA SEÇÃO SOBRE MIM

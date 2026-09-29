@@ -67,6 +67,7 @@ class BookBase(BaseModel):
     year: Optional[str] = None
     publisher: Optional[str] = None
     external_url: Optional[str] = None
+    tag: Optional[str] = Field(default=None, max_length=80)
 
 
 class BookCreate(BookBase):
@@ -79,6 +80,7 @@ class BookUpdate(BaseModel):
     year: Optional[str] = None
     publisher: Optional[str] = None
     external_url: Optional[str] = None
+    tag: Optional[str] = Field(default=None, max_length=80)
 
 
 class BookOut(BookBase):
@@ -129,6 +131,7 @@ class EducationalProductBase(BaseModel):
     kicker: Optional[str] = None
     category: Optional[str] = None
     external_url: Optional[str] = None
+    tag: Optional[str] = Field(default=None, max_length=80)
     order: int = 0
 
 
@@ -141,11 +144,13 @@ class EducationalProductUpdate(BaseModel):
     kicker: Optional[str] = None
     category: Optional[str] = None
     external_url: Optional[str] = None
+    tag: Optional[str] = Field(default=None, max_length=80)
     order: Optional[int] = None
 
 
 class EducationalProductOut(EducationalProductBase):
     id: int
+    image_path: Optional[str] = None
     created_at: datetime
     updated_at: datetime
 

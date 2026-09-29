@@ -5,12 +5,13 @@ Rotas de produtos educacionais:
 """
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 
 from app import crud, schemas
 from app.auth import get_current_admin
 from app.database import get_db
+from app.uploads import delete_uploaded_file, save_image_upload
 
 router = APIRouter(prefix="/api/products", tags=["products"])
 
@@ -51,4 +52,35 @@ def delete_product(
     product = crud.get_product(db, product_id)
     if not product:
         raise HTTPException(status_code=404, detail="Produto educacional não encontrado")
+    delete_uploaded_file(product.image_path)
     crud.delete_product(db, product)
+
+
+@router.post("/{product_id}/image", response_model=schemas.EducationalProductOut)
+async def upload_product_image(
+    product_id: int,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_admin=Depends(get_current_admin),
+):
+    product = crud.get_product(db, product_id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Produto educacional não encontrado")
+
+    relative_path = await save_image_upload(file, prefix="produto-")
+    delete_uploaded_file(product.image_path)
+    return crud.set_product_image(db, product, relative_path)
+
+
+@router.delete("/{product_id}/image", response_model=schemas.EducationalProductOut)
+def delete_product_image(
+    product_id: int,
+    db: Session = Depends(get_db),
+    current_admin=Depends(get_current_admin),
+):
+    product = crud.get_product(db, product_id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Produto educacional não encontrado")
+
+    delete_uploaded_file(product.image_path)
+    return crud.set_product_image(db, product, None)

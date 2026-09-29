@@ -12,12 +12,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
-from app.database import Base, engine
+from app.database import Base, engine, ensure_content_columns
 from app.routers import about, auth_routes, projects, contact, books, publications, products, career
 
 # Cria as tabelas automaticamente caso ainda não existam
 # (para produção, prefira migrações com Alembic).
 Base.metadata.create_all(bind=engine)
+ensure_content_columns()
 os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
 
 app = FastAPI(

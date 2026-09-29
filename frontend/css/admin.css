@@ -302,6 +302,7 @@ input, textarea, select { font-family: inherit; font-size: .95rem; }
 .badge.concluido { background: rgba(61,138,95,.12); color: var(--success); }
 .badge.featured-yes { background: rgba(162,22,112,.12); color: var(--wine); }
 .badge.featured-no { background: #f1edf1; color: var(--muted); }
+.badge.content-tag { color: #8a4b15; background: #fff0d8; white-space: nowrap; }
 
 .row-actions { display: flex; gap: 8px; justify-content: flex-end; }
 .icon-btn {

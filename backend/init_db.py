@@ -10,7 +10,7 @@ O que ele faz:
 Uso:
     python init_db.py
 """
-from app.database import Base, engine, SessionLocal
+from app.database import Base, engine, SessionLocal, ensure_content_columns
 from app.config import settings
 from app import models, crud
 from app.auth import hash_password
@@ -135,14 +135,16 @@ SEED_PUBLICATIONS = [
 ]
 
 SEED_PRODUCTS = [
-    {"title": "Dona Seringa e a Turma dos Super Protetores", "kicker": "Saúde das crianças", "category": "Saúde infantil", "external_url": "https://educapes.capes.gov.br/handle/capes/1190834", "order": 0},
-    {"title": "Trabalhando com Projetos: experiências com microbiologia", "kicker": "Educação Infantil", "category": "Educação Infantil", "external_url": "https://educapes.capes.gov.br/handle/capes/1190833", "order": 1},
-    {"title": "Os Super Atletas da Saúde — O Mistério do Sorriso Campeão", "kicker": "Saúde bucal", "category": "Saúde infantil", "external_url": "https://educapes.capes.gov.br/handle/capes/1174236", "order": 2},
-    {"title": "Score Medsense: desvendando emoções na formação médica", "kicker": "Formação médica", "category": "Educação médica", "external_url": "https://educapes.capes.gov.br/handle/capes/971694", "order": 3},
-    {"title": "Guia de acompanhamento alimentar na creche", "kicker": "Educação alimentar", "category": "Educação Infantil", "external_url": "https://educapes.capes.gov.br/handle/capes/1190832", "order": 4},
-    {"title": "Além das Cicatrizes: protocolo de escuta, cuidado e intervenção", "kicker": "Saúde mental", "category": "Saúde mental", "external_url": "https://educapes.capes.gov.br/handle/capes/1190904", "order": 5},
-    {"title": "Autosserviço como Prática Pedagógica na Pré-Escola", "kicker": "Autonomia infantil", "category": "Educação Infantil", "external_url": "https://educapes.capes.gov.br/handle/capes/1174253", "order": 6},
-    {"title": "Dor Abdominal no Internato de Medicina de Emergência", "kicker": "Educação médica", "category": "Educação médica", "external_url": "https://educapes.capes.gov.br/handle/capes/1190528", "order": 7},
+    {"title": "Dona Seringa e a Turma dos Super Protetores", "kicker": "Saúde das crianças", "category": "Saúde infantil", "external_url": "https://educapes.capes.gov.br/handle/capes/1190834", "image_path": "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.03.23 (1).jpeg", "tag": None, "order": 0},
+    {"title": "Trabalhando com Projetos: experiências com microbiologia", "kicker": "Educação Infantil", "category": "Educação Infantil", "external_url": "https://educapes.capes.gov.br/handle/capes/1190833", "image_path": "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.03.23 (2).jpeg", "tag": None, "order": 1},
+    {"title": "Os Super Atletas da Saúde — O Mistério do Sorriso Campeão", "kicker": "Saúde bucal", "category": "Saúde infantil", "external_url": "https://educapes.capes.gov.br/handle/capes/1174236", "image_path": "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.10.28.jpeg", "tag": None, "order": 2},
+    {"title": "Score Medsense: desvendando emoções na formação médica", "kicker": "Formação médica", "category": "Educação médica", "external_url": "https://share.google/NUFDNddA3VSCJpqnU", "image_path": "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.21.28.jpeg", "tag": None, "order": 3},
+    {"title": "Guia de acompanhamento alimentar na creche", "kicker": "Educação alimentar", "category": "Educação Infantil", "external_url": "https://educapes.capes.gov.br/handle/capes/1190832", "image_path": "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.03.23.jpeg", "tag": None, "order": 4},
+    {"title": "Além das Cicatrizes: protocolo de escuta, cuidado e intervenção", "kicker": "Saúde mental", "category": "Saúde mental", "external_url": "https://educapes.capes.gov.br/handle/capes/1190904", "image_path": "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.10.12.jpeg", "tag": None, "order": 5},
+    {"title": "Autosserviço como Prática Pedagógica na Pré-Escola", "kicker": "Autonomia infantil", "category": "Educação Infantil", "external_url": "https://educapes.capes.gov.br/handle/capes/1174253", "image_path": "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.10.28 (1).jpeg", "tag": None, "order": 6},
+    {"title": "Dor Abdominal no Internato de Medicina de Emergência", "kicker": "Educação médica", "category": "Educação médica", "external_url": "https://educapes.capes.gov.br/handle/capes/1190528", "image_path": "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.15.57.jpeg", "tag": None, "order": 7},
+    {"title": "Crescer em Saúde", "kicker": "Crianças de 0 a 3 anos", "category": "Saúde infantil", "external_url": None, "image_path": "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.11.01 (1).jpeg", "tag": "Lançamento em breve", "order": 8},
+    {"title": "Amamentação e alimentação de crianças de 0 a 3 anos", "kicker": "Primeira infância", "category": "Saúde infantil", "external_url": None, "image_path": "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.11.01.jpeg", "tag": "Lançamento em breve", "order": 9},
 ]
 
 
@@ -157,13 +159,33 @@ def seed_publications_if_empty(db):
 
 
 def seed_products_if_empty(db):
-    if db.query(models.EducationalProduct).count() > 0:
-        print("Já existem produtos educacionais cadastrados — pulando seed.")
-        return
+    created = 0
+    updated = 0
     for item in SEED_PRODUCTS:
-        db.add(models.EducationalProduct(**item))
+        product = db.query(models.EducationalProduct).filter(
+            models.EducationalProduct.title == item["title"]
+        ).first()
+        if product:
+            changed = False
+            if not product.image_path:
+                product.image_path = item["image_path"]
+                changed = True
+            if not product.tag and item["tag"]:
+                product.tag = item["tag"]
+                changed = True
+            if (
+                product.title == "Score Medsense: desvendando emoções na formação médica"
+                and product.external_url == "https://educapes.capes.gov.br/handle/capes/971694"
+            ):
+                product.external_url = item["external_url"]
+                changed = True
+            if changed:
+                updated += 1
+        else:
+            db.add(models.EducationalProduct(**item))
+            created += 1
     db.commit()
-    print(f"{len(SEED_PRODUCTS)} produto(s) educacional(is) inicial(is) criado(s).")
+    print(f"Produtos educacionais sincronizados: {created} criado(s), {updated} atualizado(s).")
 
 
 def seed_projects_if_empty(db):
@@ -217,6 +239,7 @@ def seed_career_if_empty(db):
 def main():
     print("Criando tabelas...")
     Base.metadata.create_all(bind=engine)
+    ensure_content_columns()
 
     db = SessionLocal()
     try:

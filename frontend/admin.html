@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
-<link rel="stylesheet" href="css/admin.css?v=admin-20260925-3">
+<link rel="stylesheet" href="css/admin.css?v=admin-20260929-1">
 </head>
 <body>
 
@@ -148,11 +148,12 @@
               <th>Título</th>
               <th>Ano</th>
               <th>Editora</th>
+              <th>Tag</th>
               <th></th>
             </tr>
           </thead>
           <tbody id="booksTableBody">
-            <tr><td colspan="5" class="empty-row">Carregando...</td></tr>
+            <tr><td colspan="6" class="empty-row">Carregando...</td></tr>
           </tbody>
         </table>
       </div>
@@ -193,13 +194,15 @@
         <table class="data-table">
           <thead>
             <tr>
+              <th></th>
               <th>Título</th>
               <th>Categoria</th>
+              <th>Tag</th>
               <th></th>
             </tr>
           </thead>
           <tbody id="productsTableBody">
-            <tr><td colspan="3" class="empty-row">Carregando...</td></tr>
+            <tr><td colspan="5" class="empty-row">Carregando...</td></tr>
           </tbody>
         </table>
       </div>
@@ -373,6 +376,12 @@
         <input type="url" id="bookFieldUrl" placeholder="https://...">
       </div>
 
+      <div class="field tag-field">
+        <label for="bookFieldTag">Tag do livro</label>
+        <input type="text" id="bookFieldTag" list="releaseTagOptions" maxlength="80" placeholder="Ex: Pré-venda ou Lançamento em breve">
+        <p class="hint">Escolha uma sugestão ou crie uma tag personalizada.</p>
+      </div>
+
       <div class="field" id="bookCoverFieldWrap">
         <label for="bookCoverInput">Imagem / capa do livro</label>
         <div class="image-gallery" id="bookCoverPreview"></div>
@@ -471,6 +480,19 @@
         <input type="url" id="productFieldUrl" placeholder="https://...">
       </div>
 
+      <div class="field tag-field">
+        <label for="productFieldTag">Tag do produto</label>
+        <input type="text" id="productFieldTag" list="releaseTagOptions" maxlength="80" placeholder="Ex: Pré-venda ou Lançamento em breve">
+        <p class="hint">Deixe sem link quando o material ainda não estiver disponível.</p>
+      </div>
+
+      <div class="field" id="productImageFieldWrap">
+        <label for="productImageInput">Imagem / capa do produto</label>
+        <div class="image-gallery" id="productImagePreview"></div>
+        <input type="file" id="productImageInput" accept="image/*">
+        <p class="hint">Para um novo produto, a imagem será enviada junto após salvar.</p>
+      </div>
+
       <footer class="modal-footer">
         <button type="button" class="btn-outline" id="deleteProductBtn" hidden>Excluir</button>
         <div class="modal-footer-right">
@@ -483,8 +505,13 @@
   </div>
 </div>
 
+<datalist id="releaseTagOptions">
+  <option value="Pré-venda"></option>
+  <option value="Lançamento em breve"></option>
+</datalist>
+
 <div class="toast" id="toast" hidden></div>
 
-<script src="js/admin.js?v=admin-20260925-4"></script>
+<script src="js/admin.js?v=admin-20260929-1"></script>
 </body>
 </html>

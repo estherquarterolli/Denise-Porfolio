@@ -233,6 +233,7 @@ const defaultBooks = [{
   publisher: "Mar Editora",
   cover_image: "/img/joge-sementes-emoldurada-capa.png",
   external_url: "https://www.mareditora.com/product-page/jogue-sementes",
+  tag: null,
 }];
 
 function bookCardHTML(book) {
@@ -245,7 +246,10 @@ function bookCardHTML(book) {
     <article class="book-card${featuredClass} reveal">
       <div class="book-cover">${cover}</div>
       <div class="book-body">
-        <span class="book-year">${escapeHTML(book.year || "Livro infantil")}</span>
+        <div class="book-labels">
+          <span class="book-year">${escapeHTML(book.year || "Livro infantil")}</span>
+          ${book.tag ? `<span class="release-tag">${escapeHTML(book.tag)}</span>` : ""}
+        </div>
         <h3>${escapeHTML(book.title)}</h3>
         ${book.publisher ? `<span class="book-publisher">${escapeHTML(book.publisher)}</span>` : ""}
         <p class="book-desc">${escapeHTML(book.description)}</p>
@@ -595,14 +599,16 @@ const productNext = document.getElementById("productNext");
 const productFilterChips = document.getElementById("productFilterChips");
 
 const defaultProducts = [
-  { title: "Dona Seringa e a Turma dos Super Protetores", kicker: "Saúde das crianças", category: "Saúde infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1190834" },
-  { title: "Trabalhando com Projetos: experiências com microbiologia", kicker: "Educação Infantil", category: "Educação Infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1190833" },
-  { title: "Os Super Atletas da Saúde — O Mistério do Sorriso Campeão", kicker: "Saúde bucal", category: "Saúde infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1174236" },
-  { title: "Score Medsense: desvendando emoções na formação médica", kicker: "Formação médica", category: "Educação médica", external_url: "https://educapes.capes.gov.br/handle/capes/971694" },
-  { title: "Guia de acompanhamento alimentar na creche", kicker: "Educação alimentar", category: "Educação Infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1190832" },
-  { title: "Além das Cicatrizes: protocolo de escuta, cuidado e intervenção", kicker: "Saúde mental", category: "Saúde mental", external_url: "https://educapes.capes.gov.br/handle/capes/1190904" },
-  { title: "Autosserviço como Prática Pedagógica na Pré-Escola", kicker: "Autonomia infantil", category: "Educação Infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1174253" },
-  { title: "Dor Abdominal no Internato de Medicina de Emergência", kicker: "Educação médica", category: "Educação médica", external_url: "https://educapes.capes.gov.br/handle/capes/1190528" },
+  { title: "Dona Seringa e a Turma dos Super Protetores", kicker: "Saúde das crianças", category: "Saúde infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1190834", image_path: "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.03.23 (1).jpeg" },
+  { title: "Trabalhando com Projetos: experiências com microbiologia", kicker: "Educação Infantil", category: "Educação Infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1190833", image_path: "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.03.23 (2).jpeg" },
+  { title: "Os Super Atletas da Saúde — O Mistério do Sorriso Campeão", kicker: "Saúde bucal", category: "Saúde infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1174236", image_path: "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.10.28.jpeg" },
+  { title: "Score Medsense: desvendando emoções na formação médica", kicker: "Formação médica", category: "Educação médica", external_url: "https://share.google/NUFDNddA3VSCJpqnU", image_path: "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.21.28.jpeg" },
+  { title: "Guia de acompanhamento alimentar na creche", kicker: "Educação alimentar", category: "Educação Infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1190832", image_path: "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.03.23.jpeg" },
+  { title: "Além das Cicatrizes: protocolo de escuta, cuidado e intervenção", kicker: "Saúde mental", category: "Saúde mental", external_url: "https://educapes.capes.gov.br/handle/capes/1190904", image_path: "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.10.12.jpeg" },
+  { title: "Autosserviço como Prática Pedagógica na Pré-Escola", kicker: "Autonomia infantil", category: "Educação Infantil", external_url: "https://educapes.capes.gov.br/handle/capes/1174253", image_path: "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.10.28 (1).jpeg" },
+  { title: "Dor Abdominal no Internato de Medicina de Emergência", kicker: "Educação médica", category: "Educação médica", external_url: "https://educapes.capes.gov.br/handle/capes/1190528", image_path: "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.15.57.jpeg" },
+  { title: "Crescer em Saúde", kicker: "Crianças de 0 a 3 anos", category: "Saúde infantil", external_url: null, image_path: "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.11.01 (1).jpeg", tag: "Lançamento em breve" },
+  { title: "Amamentação e alimentação de crianças de 0 a 3 anos", kicker: "Primeira infância", category: "Saúde infantil", external_url: null, image_path: "/img/prod-educacionais/WhatsApp Image 2026-09-25 at 21.11.01.jpeg", tag: "Lançamento em breve" },
 ];
 let products = [...defaultProducts];
 let activeProductCategory = "";
@@ -616,13 +622,29 @@ function updateProductFilters() {
 }
 
 function productCardHTML(product) {
-  return linkCardHTML(product, { extraClass: "product-card", actionLabel: "Acessar material" });
+  const link = safeURL(product.external_url);
+  const image = product.image_path
+    ? `<img src="${escapeHTML(product.image_path)}" alt="Capa de ${escapeHTML(product.title)}" loading="lazy">`
+    : '<div class="product-image-placeholder" aria-hidden="true"><i class="ph ph-book-open-text"></i></div>';
+  const inner = `
+    <div class="product-image">
+      ${image}
+      ${product.tag ? `<span class="release-tag product-release-tag">${escapeHTML(product.tag)}</span>` : ""}
+    </div>
+    <div class="product-card-body">
+      ${product.kicker ? `<span class="card-kicker">${escapeHTML(product.kicker)}</span>` : ""}
+      <h3>${escapeHTML(product.title)}</h3>
+      ${link ? '<span class="card-action">Acessar material <i class="ph-bold ph-arrow-up-right"></i></span>' : ""}
+    </div>`;
+  return link
+    ? `<a class="link-card product-card" href="${link}" target="_blank" rel="noopener">${inner}</a>`
+    : `<article class="link-card product-card product-card-unavailable">${inner}</article>`;
 }
 
 function renderProducts() {
   const query = normalizeSearch(productSearchInput.value.trim());
   const filtered = products.filter((product) => {
-    const matchesQuery = !query || normalizeSearch(`${product.title} ${product.kicker || ""} ${product.category || ""}`).includes(query);
+    const matchesQuery = !query || normalizeSearch(`${product.title} ${product.kicker || ""} ${product.category || ""} ${product.tag || ""}`).includes(query);
     const matchesCategory = !activeProductCategory || product.category === activeProductCategory;
     return matchesQuery && matchesCategory;
   });

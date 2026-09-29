@@ -78,6 +78,7 @@ class Book(Base):
     publisher = Column(String(200), nullable=True)
     cover_image = Column(String(500), nullable=True)
     external_url = Column(String(500), nullable=True)  # link para leitura/aquisição
+    tag = Column(String(80), nullable=True)  # ex.: Pré-venda, Lançamento em breve
 
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -151,6 +152,8 @@ class EducationalProduct(Base):
     kicker = Column(String(250), nullable=True)
     category = Column(String(100), nullable=True, index=True)
     external_url = Column(String(500), nullable=True)
+    image_path = Column(String(500), nullable=True)
+    tag = Column(String(80), nullable=True)  # ex.: Pré-venda, Lançamento em breve
     order = Column(Integer, default=0, nullable=False)
 
     created_at = Column(DateTime, default=datetime.utcnow)

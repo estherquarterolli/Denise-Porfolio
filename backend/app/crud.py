@@ -218,6 +218,15 @@ def delete_product(db: Session, product: models.EducationalProduct) -> None:
     db.commit()
 
 
+def set_product_image(
+    db: Session, product: models.EducationalProduct, image_path: Optional[str]
+) -> models.EducationalProduct:
+    product.image_path = image_path
+    db.commit()
+    db.refresh(product)
+    return product
+
+
 def get_about_images(db: Session) -> List[models.AboutImage]:
     return db.query(models.AboutImage).order_by(
         models.AboutImage.order.asc(), models.AboutImage.created_at.asc()
