@@ -181,6 +181,7 @@ document.querySelectorAll(".nav-item[data-tab]").forEach((btn) => {
     document.getElementById("tabAbout").hidden = tab !== "about";
     document.getElementById("tabCareer").hidden = tab !== "career";
     document.getElementById("tabMessages").hidden = tab !== "messages";
+    document.getElementById("tabSettings").hidden = tab !== "settings";
   });
 });
 
@@ -1508,4 +1509,67 @@ async function loadMessages() {
   } catch (err) {
     messagesTableBody.innerHTML = `<tr><td colspan="5" class="empty-row">${err.message}</td></tr>`;
   }
+}
+
+/* =========================================================
+   CONFIGURAÇÃO: ALTERAR SENHA
+   ========================================================= */
+const changePasswordForm = document.getElementById("changePasswordForm");
+const currentPasswordInput = document.getElementById("currentPassword");
+const newPasswordInput = document.getElementById("newPassword");
+const confirmNewPasswordInput = document.getElementById("confirmNewPassword");
+const savePasswordBtn = document.getElementById("savePasswordBtn");
+const changePasswordError = document.getElementById("changePasswordError");
+const changePasswordSuccess = document.getElementById("changePasswordSuccess");
+
+if (changePasswordForm) {
+  changePasswordForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    changePasswordError.hidden = true;
+    changePasswordSuccess.hidden = true;
+
+    const current_password = currentPasswordInput.value;
+    const new_password = newPasswordInput.value;
+    const confirm = confirmNewPasswordInput.value;
+
+    if (new_password.length < 6) {
+      changePasswordError.textContent = "A nova senha deve ter pelo menos 6 caracteres.";
+      changePasswordError.hidden = false;
+      return;
+    }
+
+    if (new_password !== confirm) {
+      changePasswordError.textContent = "A confirmação da nova senha não confere.";
+      changePasswordError.hidden = false;
+      return;
+    }
+
+    const originalHtml = savePasswordBtn.innerHTML;
+    savePasswordBtn.disabled = true;
+    savePasswordBtn.textContent = "Salvando...";
+
+    try {
+      const res = await apiFetch("/auth/change-password", {
+        method: "POST",
+        headers: authHeaders({ "Content-Type": "application/json" }),
+        body: JSON.stringify({ current_password, new_password }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.detail || "Erro ao alterar a senha.");
+      }
+
+      changePasswordForm.reset();
+      changePasswordSuccess.textContent = "Senha alterada com sucesso! Utilize a nova senha a partir do próximo login.";
+      changePasswordSuccess.hidden = false;
+      showToast("Senha alterada com sucesso!", "success");
+    } catch (err) {
+      changePasswordError.textContent = err.message;
+      changePasswordError.hidden = false;
+    } finally {
+      savePasswordBtn.disabled = false;
+      savePasswordBtn.innerHTML = originalHtml;
+    }
+  });
 }

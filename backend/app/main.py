@@ -55,9 +55,9 @@ async def security_headers(request: Request, call_next):
         # Content Security Policy: restringe origens de scripts, estilos, fontes e frames
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; "
-            "script-src 'self' 'unsafe-inline' https://unpkg.com; "
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
-            "font-src 'self' https://fonts.gstatic.com; "
+            "script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net; "
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net; "
+            "font-src 'self' https://fonts.gstatic.com https://unpkg.com https://cdn.jsdelivr.net data:; "
             "img-src 'self' data: blob: https:; "
             "connect-src 'self'; "
             "frame-ancestors 'none'; "

@@ -8,7 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<link rel="stylesheet" href="vendor/phosphor/regular.css">
+<link rel="stylesheet" href="vendor/phosphor/bold.css">
 <link rel="stylesheet" href="css/admin.css?v=admin-20260929-1">
 </head>
 <body>
@@ -43,6 +44,7 @@
       <button class="nav-item" data-tab="about"><i class="ph ph-images"></i> Sobre mim</button>
       <button class="nav-item" data-tab="career"><i class="ph ph-path"></i> Trajetória</button>
       <button class="nav-item" data-tab="messages"><i class="ph ph-envelope-simple"></i> Mensagens</button>
+      <button class="nav-item" data-tab="settings"><i class="ph ph-gear"></i> Configuração</button>
     </nav>
     <div class="sidebar-footer">
       <a href="/" target="_blank" class="nav-item"><i class="ph ph-arrow-square-out"></i> Ver site</a>
@@ -228,6 +230,51 @@
             <tr><td colspan="5" class="empty-row">Carregando...</td></tr>
           </tbody>
         </table>
+      </div>
+    </section>
+
+    <!-- TAB: CONFIGURAÇÃO -->
+    <section id="tabSettings" class="tab-panel" hidden>
+      <header class="content-header">
+        <h2>Configuração</h2>
+      </header>
+
+      <div class="settings-container">
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <div class="settings-icon"><i class="ph-bold ph-key"></i></div>
+            <div>
+              <h3>Alterar senha de acesso</h3>
+              <p class="settings-sub">Atualize a senha inicial do usuário administrador para garantir a segurança do painel.</p>
+            </div>
+          </div>
+
+          <form id="changePasswordForm" class="settings-form">
+            <div class="field">
+              <label for="currentPassword">Senha atual</label>
+              <input type="password" id="currentPassword" required autocomplete="current-password" placeholder="Digite sua senha atual">
+            </div>
+
+            <div class="field">
+              <label for="newPassword">Nova senha</label>
+              <input type="password" id="newPassword" required minlength="6" autocomplete="new-password" placeholder="Mínimo de 6 caracteres">
+            </div>
+
+            <div class="field">
+              <label for="confirmNewPassword">Confirmar nova senha</label>
+              <input type="password" id="confirmNewPassword" required minlength="6" autocomplete="new-password" placeholder="Repita a nova senha">
+            </div>
+
+            <div class="settings-actions">
+              <button type="submit" class="btn-primary" id="savePasswordBtn">
+                <i class="ph-bold ph-check"></i> Salvar nova senha
+              </button>
+            </div>
+
+            <p class="settings-feedback error" id="changePasswordError" hidden></p>
+            <p class="settings-feedback success" id="changePasswordSuccess" hidden></p>
+          </form>
+        </div>
       </div>
     </section>
   </main>
