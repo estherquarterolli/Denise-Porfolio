@@ -173,15 +173,19 @@ document.querySelectorAll(".nav-item[data-tab]").forEach((btn) => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".nav-item[data-tab]").forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
-    const tab = btn.dataset.tab;
-    document.getElementById("tabProjects").hidden = tab !== "projects";
-    document.getElementById("tabBooks").hidden = tab !== "books";
-    document.getElementById("tabPublications").hidden = tab !== "publications";
-    document.getElementById("tabProducts").hidden = tab !== "products";
-    document.getElementById("tabAbout").hidden = tab !== "about";
-    document.getElementById("tabCareer").hidden = tab !== "career";
-    document.getElementById("tabMessages").hidden = tab !== "messages";
-    document.getElementById("tabSettings").hidden = tab !== "settings";
+    const activeTab = btn.dataset.tab;
+    
+    // Oculta todas as abas
+    document.querySelectorAll(".tab-panel").forEach((panel) => {
+      panel.hidden = true;
+    });
+
+    // Exibe a aba alvo
+    const targetId = "tab" + activeTab.charAt(0).toUpperCase() + activeTab.slice(1);
+    const target = document.getElementById(targetId);
+    if (target) {
+      target.hidden = false;
+    }
   });
 });
 
