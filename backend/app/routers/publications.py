@@ -29,6 +29,15 @@ def create_publication(
     return crud.create_publication(db, data)
 
 
+@router.put("/reorder", response_model=List[schemas.PublicationOut])
+def reorder_publications(
+    items: List[schemas.ItemOrderUpdate],
+    db: Session = Depends(get_db),
+    current_admin=Depends(get_current_admin),
+):
+    return crud.reorder_publications(db, items)
+
+
 @router.put("/{publication_id}", response_model=schemas.PublicationOut)
 def update_publication(
     publication_id: int,

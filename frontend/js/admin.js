@@ -99,6 +99,83 @@ function showToast(message, type = "success") {
 }
 
 /* =========================================================
+   DRAG AND DROP PARA TABELAS
+   ========================================================= */
+function setupTableDragAndDrop(tbody, reorderEndpoint, reloadFn) {
+  let draggedRow = null;
+  let didDrop = false;
+
+  tbody.addEventListener("dragstart", (event) => {
+    const handle = event.target.closest(".table-drag-handle");
+    if (!handle) {
+      event.preventDefault();
+      return;
+    }
+    draggedRow = handle.closest("tr");
+    if (!draggedRow) {
+      event.preventDefault();
+      return;
+    }
+    didDrop = false;
+    draggedRow.classList.add("dragging");
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", draggedRow.dataset.id || "");
+    if (event.dataTransfer.setDragImage) {
+      event.dataTransfer.setDragImage(draggedRow, 24, 24);
+    }
+  });
+
+  tbody.addEventListener("dragover", (event) => {
+    if (!draggedRow) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+
+    const target = event.target.closest("tr");
+    tbody.querySelectorAll(".drag-over").forEach((r) => r.classList.remove("drag-over"));
+    if (!target || target === draggedRow || !target.dataset.id) return;
+    target.classList.add("drag-over");
+
+    const rect = target.getBoundingClientRect();
+    const afterTarget = event.clientY > rect.top + rect.height / 2;
+    target.insertAdjacentElement(afterTarget ? "afterend" : "beforebegin", draggedRow);
+  });
+
+  tbody.addEventListener("drop", async (event) => {
+    if (!draggedRow) return;
+    event.preventDefault();
+    didDrop = true;
+    const rows = [...tbody.querySelectorAll("tr[data-id]")];
+    const payload = rows
+      .map((row, order) => ({ id: Number(row.dataset.id), order }))
+      .filter((item) => Number.isFinite(item.id));
+
+    try {
+      const res = await apiFetch(reorderEndpoint, {
+        method: "PUT",
+        headers: authHeaders({ "Content-Type": "application/json" }),
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Erro ao salvar a nova ordem");
+      showToast("Nova ordem salva!");
+      if (reloadFn) reloadFn();
+    } catch (err) {
+      showToast(err.message, "error");
+      if (reloadFn) reloadFn();
+    }
+  });
+
+  tbody.addEventListener("dragend", () => {
+    tbody.querySelectorAll("tr").forEach((r) => r.classList.remove("dragging", "drag-over"));
+    const wasDropped = didDrop;
+    draggedRow = null;
+    didDrop = false;
+    if (!wasDropped && reloadFn) {
+      reloadFn();
+    }
+  });
+}
+
+/* =========================================================
    LOGIN / LOGOUT
    ========================================================= */
 function showLogin() {
@@ -195,20 +272,20 @@ document.querySelectorAll(".nav-item[data-tab]").forEach((btn) => {
 let currentProjects = [];
 
 async function loadProjects() {
-  projectsTableBody.innerHTML = `<tr><td colspan="6" class="empty-row">Carregando...</td></tr>`;
+  projectsTableBody.innerHTML = `<tr><td colspan="7" class="empty-row">Carregando...</td></tr>`;
   try {
     const res = await apiFetch("/projects");
     const projects = await res.json();
     currentProjects = projects;
     renderProjectsTable(projects);
   } catch (err) {
-    projectsTableBody.innerHTML = `<tr><td colspan="6" class="empty-row">${err.message}</td></tr>`;
+    projectsTableBody.innerHTML = `<tr><td colspan="7" class="empty-row">${err.message}</td></tr>`;
   }
 }
 
 function renderProjectsTable(projects) {
   if (!projects.length) {
-    projectsTableBody.innerHTML = `<tr><td colspan="6" class="empty-row">Nenhum projeto cadastrado ainda. Clique em "Novo projeto".</td></tr>`;
+    projectsTableBody.innerHTML = `<tr><td colspan="7" class="empty-row">Nenhum projeto cadastrado ainda. Clique em "Novo projeto".</td></tr>`;
     return;
   }
 
@@ -221,6 +298,11 @@ function renderProjectsTable(projects) {
 
       return `
         <tr data-id="${p.id}">
+          <td class="td-drag">
+            <button class="table-drag-handle" type="button" draggable="true" aria-label="Arrastar para mudar a ordem" title="Arraste para mudar a ordem">
+              <i class="ph ph-dots-six-vertical"></i>
+            </button>
+          </td>
           <td>${thumb}</td>
           <td><strong>${escapeHTML(p.title)}</strong></td>
           <td>${escapeHTML(p.category || "—")}</td>
@@ -252,6 +334,8 @@ function renderProjectsTable(projects) {
     });
   });
 }
+
+setupTableDragAndDrop(projectsTableBody, "/projects/reorder", loadProjects);
 
 function escapeHTML(str) {
   const div = document.createElement("div");
@@ -454,20 +538,20 @@ imageUploadInput.addEventListener("change", async () => {
 let currentBooks = [];
 
 async function loadBooks() {
-  booksTableBody.innerHTML = `<tr><td colspan="6" class="empty-row">Carregando...</td></tr>`;
+  booksTableBody.innerHTML = `<tr><td colspan="7" class="empty-row">Carregando...</td></tr>`;
   try {
     const res = await apiFetch("/books");
     const books = await res.json();
     currentBooks = books;
     renderBooksTable(books);
   } catch (err) {
-    booksTableBody.innerHTML = `<tr><td colspan="6" class="empty-row">${err.message}</td></tr>`;
+    booksTableBody.innerHTML = `<tr><td colspan="7" class="empty-row">${err.message}</td></tr>`;
   }
 }
 
 function renderBooksTable(books) {
   if (!books.length) {
-    booksTableBody.innerHTML = `<tr><td colspan="6" class="empty-row">Nenhum livro cadastrado ainda. Clique em "Novo livro".</td></tr>`;
+    booksTableBody.innerHTML = `<tr><td colspan="7" class="empty-row">Nenhum livro cadastrado ainda. Clique em "Novo livro".</td></tr>`;
     return;
   }
 
@@ -479,6 +563,11 @@ function renderBooksTable(books) {
 
       return `
         <tr data-id="${b.id}">
+          <td class="td-drag">
+            <button class="table-drag-handle" type="button" draggable="true" aria-label="Arrastar para mudar a ordem" title="Arraste para mudar a ordem">
+              <i class="ph ph-dots-six-vertical"></i>
+            </button>
+          </td>
           <td>${thumb}</td>
           <td><strong>${escapeHTML(b.title)}</strong></td>
           <td>${escapeHTML(b.year || "—")}</td>
@@ -510,6 +599,8 @@ function renderBooksTable(books) {
     });
   });
 }
+
+setupTableDragAndDrop(booksTableBody, "/books/reorder", loadBooks);
 
 /* =========================================================
    LIVROS: MODAL ABRIR / FECHAR
@@ -713,23 +804,28 @@ let currentPublications = [];
 let editingPublication = null;
 
 async function loadPublications() {
-  publicationsTableBody.innerHTML = `<tr><td colspan="4" class="empty-row">Carregando...</td></tr>`;
+  publicationsTableBody.innerHTML = `<tr><td colspan="5" class="empty-row">Carregando...</td></tr>`;
   try {
     const res = await apiFetch("/publications");
     currentPublications = await res.json();
     renderPublicationsTable();
   } catch (err) {
-    publicationsTableBody.innerHTML = `<tr><td colspan="4" class="empty-row">${err.message}</td></tr>`;
+    publicationsTableBody.innerHTML = `<tr><td colspan="5" class="empty-row">${err.message}</td></tr>`;
   }
 }
 
 function renderPublicationsTable() {
   if (!currentPublications.length) {
-    publicationsTableBody.innerHTML = `<tr><td colspan="4" class="empty-row">Nenhuma publicação cadastrada ainda. Clique em "Nova publicação".</td></tr>`;
+    publicationsTableBody.innerHTML = `<tr><td colspan="5" class="empty-row">Nenhuma publicação cadastrada ainda. Clique em "Nova publicação".</td></tr>`;
     return;
   }
   publicationsTableBody.innerHTML = currentPublications.map((p) => `
     <tr data-id="${p.id}">
+      <td class="td-drag">
+        <button class="table-drag-handle" type="button" draggable="true" aria-label="Arrastar para mudar a ordem" title="Arraste para mudar a ordem">
+          <i class="ph ph-dots-six-vertical"></i>
+        </button>
+      </td>
       <td><strong>${escapeHTML(p.title)}</strong></td>
       <td>${escapeHTML(p.category || "—")}</td>
       <td><span class="badge ${p.featured ? "featured-yes" : "featured-no"}">${p.featured ? "Sim" : "Não"}</span></td>
@@ -757,6 +853,8 @@ function renderPublicationsTable() {
     });
   });
 }
+
+setupTableDragAndDrop(publicationsTableBody, "/publications/reorder", loadPublications);
 
 function openPublicationModal(publication = null) {
   editingPublication = publication;
@@ -861,23 +959,28 @@ let currentProducts = [];
 let editingProduct = null;
 
 async function loadProducts() {
-  productsTableBody.innerHTML = `<tr><td colspan="5" class="empty-row">Carregando...</td></tr>`;
+  productsTableBody.innerHTML = `<tr><td colspan="6" class="empty-row">Carregando...</td></tr>`;
   try {
     const res = await apiFetch("/products");
     currentProducts = await res.json();
     renderProductsTable();
   } catch (err) {
-    productsTableBody.innerHTML = `<tr><td colspan="5" class="empty-row">${err.message}</td></tr>`;
+    productsTableBody.innerHTML = `<tr><td colspan="6" class="empty-row">${err.message}</td></tr>`;
   }
 }
 
 function renderProductsTable() {
   if (!currentProducts.length) {
-    productsTableBody.innerHTML = `<tr><td colspan="5" class="empty-row">Nenhum produto cadastrado ainda. Clique em "Novo produto".</td></tr>`;
+    productsTableBody.innerHTML = `<tr><td colspan="6" class="empty-row">Nenhum produto cadastrado ainda. Clique em "Novo produto".</td></tr>`;
     return;
   }
   productsTableBody.innerHTML = currentProducts.map((p) => `
     <tr data-id="${p.id}">
+      <td class="td-drag">
+        <button class="table-drag-handle" type="button" draggable="true" aria-label="Arrastar para mudar a ordem" title="Arraste para mudar a ordem">
+          <i class="ph ph-dots-six-vertical"></i>
+        </button>
+      </td>
       <td>${p.image_path ? `<img class="thumb" src="${escapeHTML(p.image_path)}" alt="">` : '<div class="thumb-placeholder"><i class="ph ph-image"></i></div>'}</td>
       <td><strong>${escapeHTML(p.title)}</strong></td>
       <td>${escapeHTML(p.category || "—")}</td>
@@ -906,6 +1009,8 @@ function renderProductsTable() {
     });
   });
 }
+
+setupTableDragAndDrop(productsTableBody, "/products/reorder", loadProducts);
 
 function openProductModal(product = null) {
   editingProduct = product;

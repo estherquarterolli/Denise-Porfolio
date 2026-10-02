@@ -39,6 +39,7 @@ class Project(Base):
     project_date = Column(String(50), nullable=True)  # texto livre, ex: "2025 - Atual"
     status = Column(SAEnum(ProjectStatus), nullable=False, default=ProjectStatus.EM_ANDAMENTO)
     featured = Column(Boolean, default=False, nullable=False)
+    order = Column(Integer, default=0, nullable=False)
 
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -79,6 +80,7 @@ class Book(Base):
     cover_image = Column(String(500), nullable=True)
     external_url = Column(String(500), nullable=True)  # link para leitura/aquisição
     tag = Column(String(80), nullable=True)  # ex.: Pré-venda, Lançamento em breve
+    order = Column(Integer, default=0, nullable=False)
 
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

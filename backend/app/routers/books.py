@@ -42,6 +42,15 @@ def create_book(
     return crud.create_book(db, data)
 
 
+@router.put("/reorder", response_model=List[schemas.BookOut])
+def reorder_books(
+    items: List[schemas.ItemOrderUpdate],
+    db: Session = Depends(get_db),
+    current_admin=Depends(get_current_admin),
+):
+    return crud.reorder_books(db, items)
+
+
 @router.put("/{book_id}", response_model=schemas.BookOut)
 def update_book(
     book_id: int,

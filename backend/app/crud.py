@@ -57,7 +57,7 @@ def get_projects(
     if featured_only:
         query = query.filter(models.Project.featured.is_(True))
 
-    return query.order_by(models.Project.featured.desc(), models.Project.created_at.desc()).all()
+    return query.order_by(models.Project.order.asc(), models.Project.created_at.desc()).all()
 
 
 def get_project(db: Session, project_id: int) -> Optional[models.Project]:
@@ -116,7 +116,7 @@ def delete_project_image(db: Session, image: models.ProjectImage) -> None:
 
 
 def get_books(db: Session) -> List[models.Book]:
-    return db.query(models.Book).order_by(models.Book.created_at.desc()).all()
+    return db.query(models.Book).order_by(models.Book.order.asc(), models.Book.created_at.desc()).all()
 
 
 def get_book(db: Session, book_id: int) -> Optional[models.Book]:
@@ -154,7 +154,7 @@ def delete_book(db: Session, book: models.Book) -> None:
 
 def get_publications(db: Session) -> List[models.Publication]:
     return db.query(models.Publication).order_by(
-        models.Publication.featured.desc(), models.Publication.order.asc(), models.Publication.created_at.desc()
+        models.Publication.order.asc(), models.Publication.created_at.desc()
     ).all()
 
 
@@ -269,6 +269,82 @@ def update_about_image(
 def delete_about_image(db: Session, image: models.AboutImage) -> None:
     db.delete(image)
     db.commit()
+
+
+def reorder_projects(
+    db: Session, items: List[schemas.ItemOrderUpdate]
+) -> List[models.Project]:
+    if not items:
+        return get_projects(db)
+    items_by_id = {
+        p.id: p
+        for p in db.query(models.Project).filter(
+            models.Project.id.in_([item.id for item in items])
+        ).all()
+    }
+    for item in items:
+        p = items_by_id.get(item.id)
+        if p:
+            p.order = item.order
+    db.commit()
+    return get_projects(db)
+
+
+def reorder_books(
+    db: Session, items: List[schemas.ItemOrderUpdate]
+) -> List[models.Book]:
+    if not items:
+        return get_books(db)
+    items_by_id = {
+        b.id: b
+        for b in db.query(models.Book).filter(
+            models.Book.id.in_([item.id for item in items])
+        ).all()
+    }
+    for item in items:
+        b = items_by_id.get(item.id)
+        if b:
+            b.order = item.order
+    db.commit()
+    return get_books(db)
+
+
+def reorder_publications(
+    db: Session, items: List[schemas.ItemOrderUpdate]
+) -> List[models.Publication]:
+    if not items:
+        return get_publications(db)
+    pubs_by_id = {
+        p.id: p
+        for p in db.query(models.Publication).filter(
+            models.Publication.id.in_([item.id for item in items])
+        ).all()
+    }
+    for item in items:
+        p = pubs_by_id.get(item.id)
+        if p:
+            p.order = item.order
+    db.commit()
+    return get_publications(db)
+
+
+def reorder_products(
+    db: Session, items: List[schemas.ItemOrderUpdate]
+) -> List[models.EducationalProduct]:
+    if not items:
+        return get_products(db)
+    prods_by_id = {
+        p.id: p
+        for p in db.query(models.EducationalProduct).filter(
+            models.EducationalProduct.id.in_([item.id for item in items])
+        ).all()
+    }
+    for item in items:
+        p = prods_by_id.get(item.id)
+        if p:
+            p.order = item.order
+    db.commit()
+    return get_products(db)
 
 
 def reorder_about_images(

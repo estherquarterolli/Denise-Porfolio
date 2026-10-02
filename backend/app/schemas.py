@@ -31,6 +31,7 @@ class ProjectBase(BaseModel):
     project_date: Optional[str] = None
     status: ProjectStatus = ProjectStatus.EM_ANDAMENTO
     featured: bool = False
+    order: int = 0
 
 
 class ProjectCreate(ProjectBase):
@@ -47,6 +48,7 @@ class ProjectUpdate(BaseModel):
     project_date: Optional[str] = None
     status: Optional[ProjectStatus] = None
     featured: Optional[bool] = None
+    order: Optional[int] = None
 
 
 class ProjectOut(ProjectBase):
@@ -68,6 +70,7 @@ class BookBase(BaseModel):
     publisher: Optional[str] = None
     external_url: Optional[str] = None
     tag: Optional[str] = Field(default=None, max_length=80)
+    order: int = 0
 
 
 class BookCreate(BookBase):
@@ -81,6 +84,7 @@ class BookUpdate(BaseModel):
     publisher: Optional[str] = None
     external_url: Optional[str] = None
     tag: Optional[str] = Field(default=None, max_length=80)
+    order: Optional[int] = None
 
 
 class BookOut(BookBase):
@@ -177,9 +181,12 @@ class AboutImageOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class AboutImageOrderUpdate(BaseModel):
+class ItemOrderUpdate(BaseModel):
     id: int
     order: int = Field(..., ge=0)
+
+
+AboutImageOrderUpdate = ItemOrderUpdate
 
 
 # ---------- Trajetória acadêmica e profissional ----------

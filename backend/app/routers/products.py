@@ -30,6 +30,15 @@ def create_product(
     return crud.create_product(db, data)
 
 
+@router.put("/reorder", response_model=List[schemas.EducationalProductOut])
+def reorder_products(
+    items: List[schemas.ItemOrderUpdate],
+    db: Session = Depends(get_db),
+    current_admin=Depends(get_current_admin),
+):
+    return crud.reorder_products(db, items)
+
+
 @router.put("/{product_id}", response_model=schemas.EducationalProductOut)
 def update_product(
     product_id: int,

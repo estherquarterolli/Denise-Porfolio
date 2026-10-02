@@ -61,6 +61,15 @@ def create_project(
     return crud.create_project(db, data)
 
 
+@router.put("/reorder", response_model=List[schemas.ProjectOut])
+def reorder_projects(
+    items: List[schemas.ItemOrderUpdate],
+    db: Session = Depends(get_db),
+    current_admin=Depends(get_current_admin),
+):
+    return crud.reorder_projects(db, items)
+
+
 @router.put("/{project_id}", response_model=schemas.ProjectOut)
 def update_project(
     project_id: int,

@@ -275,6 +275,49 @@ input, textarea, select { font-family: inherit; font-size: .95rem; }
 }
 .data-table tr:last-child td { border-bottom: none; }
 .data-table tr:hover td { background: #fdf9fc; }
+.data-table tr.dragging td {
+  opacity: .45;
+  background: #fbf1f7 !important;
+}
+.data-table tr.drag-over td {
+  border-top: 2px solid var(--wine);
+  background: #faf2f8;
+}
+.data-table .th-drag {
+  width: 46px;
+  min-width: 46px;
+  max-width: 46px;
+  padding: 15px 6px 15px 16px;
+}
+.data-table .td-drag {
+  width: 46px;
+  min-width: 46px;
+  max-width: 46px;
+  padding: 10px 6px 10px 16px;
+  text-align: center;
+}
+.table-drag-handle {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-size: 1.15rem;
+  cursor: grab;
+  transition: all .16s ease;
+}
+.table-drag-handle:hover {
+  color: var(--wine);
+  background: #f4ecf2;
+  border-color: rgba(139, 44, 83, 0.18);
+}
+.table-drag-handle:active {
+  cursor: grabbing;
+}
 .empty-row { text-align: center; color: var(--muted); padding: 44px !important; }
 
 .thumb {

@@ -158,13 +158,13 @@ h1, h2, h3 { margin-top: 0; font-family: "Manrope", sans-serif; letter-spacing: 
 
 .books { --wave-fill: #e9bfe8; background: linear-gradient(180deg, #e9bfe8 0%, #f2ddf2 100%); }
 .books-grid { display: grid; grid-template-columns: 1fr; gap: 28px; width: 100%; max-width: none; margin-inline: auto; }
-.book-card { position: relative; min-width: 0; min-height: 340px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 420px); gap: clamp(26px, 4vw, 54px); padding: clamp(24px, 3vw, 38px); overflow: hidden; background: rgba(255,255,255,.56); border: 1px solid rgba(123,80,117,.12); border-radius: 30px; box-shadow: 0 18px 46px rgba(80,41,74,.07); }
+.book-card { position: relative; min-width: 0; min-height: 360px; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(330px, 470px); gap: clamp(26px, 4vw, 54px); padding: clamp(26px, 3.2vw, 42px); overflow: hidden; background: rgba(255,255,255,.56); border: 1px solid rgba(123,80,117,.12); border-radius: 30px; box-shadow: 0 18px 46px rgba(80,41,74,.07); }
 .book-card::before, .book-card::after { content: none; }
-.book-card:first-child { grid-column: 1 / -1; min-height: 380px; }
-.book-cover { grid-column: 2; grid-row: 1; position: relative; z-index: 1; min-width: 0; min-height: 300px; display: flex; align-items: center; justify-content: center; background: transparent; }
-.book-cover img { width: 100%; height: auto; max-height: 350px; object-fit: contain; }
-.book-featured .book-cover { height: 310px; overflow: hidden; }
-.book-featured .book-cover img { width: auto; max-width: none; height: 420px; max-height: none; object-fit: contain; }
+.book-card:first-child { grid-column: 1 / -1; min-height: 400px; }
+.book-cover { grid-column: 2; grid-row: 1; position: relative; z-index: 1; min-width: 0; min-height: 340px; display: flex; align-items: center; justify-content: center; background: transparent; }
+.book-cover img { width: 100%; height: auto; max-height: 395px; object-fit: contain; }
+.book-featured .book-cover { height: 350px; overflow: hidden; }
+.book-featured .book-cover img { width: auto; max-width: none; height: 460px; max-height: none; object-fit: contain; }
 .book-cover .no-cover { height: 100%; display: grid; place-items: center; color: var(--wine); font-size: 4rem; }
 .book-body { grid-column: 1; grid-row: 1; position: relative; z-index: 1; align-self: center; }
 .book-labels { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
@@ -349,12 +349,12 @@ h1, h2, h3 { margin-top: 0; font-family: "Manrope", sans-serif; letter-spacing: 
   .timeline-item { flex-basis: 220px; padding: 16px 18px 17px; }
   .books-grid { grid-template-columns: 1fr; }
   .carousel-track > * { flex-basis: min(300px, 84vw); }
-  .book-card, .book-card:first-child { min-height: auto; grid-column: auto; grid-template-columns: 1fr; gap: 14px; padding: 20px; }
+  .book-card, .book-card:first-child { min-height: auto; grid-column: auto; grid-template-columns: 1fr; gap: 18px; padding: 22px 18px 26px; }
   .book-cover, .book-body { grid-column: 1; }
-  .book-cover { grid-row: 1; min-height: 240px; height: 260px; }
-  .book-cover img { max-height: 260px; }
-  .book-featured .book-cover { min-height: 250px; height: 270px; }
-  .book-featured .book-cover img { height: 360px; max-height: none; }
+  .book-cover { grid-row: 1; min-height: 310px; height: auto; display: flex; align-items: center; justify-content: center; padding: 6px 0; }
+  .book-cover img { width: 100%; max-width: 350px; height: auto; max-height: 340px; object-fit: contain; }
+  .book-featured .book-cover { min-height: 310px; height: auto; }
+  .book-featured .book-cover img { width: 100%; max-width: 370px; height: auto; max-height: 360px; object-fit: contain; }
   .book-body { grid-row: 2; padding: 0 4px 8px; }
   .about-featured .carousel-arrow { width: 34px; height: 34px; }
   .book-body h3 { font-size: 2rem; }
@@ -375,4 +375,6 @@ h1, h2, h3 { margin-top: 0; font-family: "Manrope", sans-serif; letter-spacing: 
   .hero-actions .button { width: 100%; }
   .qualification-list { grid-template-columns: 1fr; }
   .about-thumb { width: 54px; height: 54px; }
+  .book-cover { min-height: 280px; }
+  .book-cover img { max-height: 295px; max-width: 295px; }
 }

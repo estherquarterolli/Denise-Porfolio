@@ -21,10 +21,18 @@ Base = declarative_base()
 CONTENT_COLUMNS = {
     "books": {
         "tag": "VARCHAR(80)",
+        "order": "INTEGER DEFAULT 0",
+    },
+    "projects": {
+        "order": "INTEGER DEFAULT 0",
+    },
+    "publications": {
+        "order": "INTEGER DEFAULT 0",
     },
     "educational_products": {
         "image_path": "VARCHAR(500)",
         "tag": "VARCHAR(80)",
+        "order": "INTEGER DEFAULT 0",
     },
 }
 
