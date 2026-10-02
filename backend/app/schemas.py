@@ -225,8 +225,8 @@ class Token(BaseModel):
 
 
 class LoginRequest(BaseModel):
-    username: str
-    password: str
+    username: str = Field(..., min_length=1, max_length=100)
+    password: str = Field(..., min_length=1, max_length=128)
 
 
 # ---------- Contato ----------
@@ -234,7 +234,8 @@ class LoginRequest(BaseModel):
 class ContactCreate(BaseModel):
     name: str = Field(..., min_length=2, max_length=200)
     email: EmailStr
-    message: str = Field(..., min_length=5)
+    message: str = Field(..., min_length=5, max_length=5000)
+    website: Optional[str] = Field(default=None, max_length=100)
 
 
 class ContactOut(BaseModel):

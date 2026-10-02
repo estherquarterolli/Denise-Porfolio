@@ -696,6 +696,7 @@ contactForm.addEventListener("submit", async (event) => {
         name: document.getElementById("name").value.trim(),
         email: document.getElementById("email").value.trim(),
         message: document.getElementById("message").value.trim(),
+        website: document.getElementById("website") ? document.getElementById("website").value.trim() : "",
       }),
     });
     if (!response.ok) {

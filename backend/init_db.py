@@ -17,6 +17,67 @@ from app.auth import hash_password
 from app.routers.career import DEFAULT_HIGHLIGHTS, DEFAULT_TIMELINE
 
 
+def ensure_database_exists():
+    """Se for PostgreSQL e o banco especificado não existir, tenta criá-lo automaticamente."""
+    from sqlalchemy.engine.url import make_url
+
+    db_url = settings.DATABASE_URL
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
+
+    url = make_url(db_url)
+    if not url.drivername.startswith("postgresql"):
+        return
+
+    db_name = url.database
+    if not db_name or db_name in ("postgres", "template1"):
+        return
+
+    try:
+        import psycopg2
+        from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+    except ImportError:
+        return
+
+    # Testa se já consegue conectar no banco de destino
+    try:
+        conn = psycopg2.connect(
+            dbname=db_name,
+            user=url.username,
+            password=url.password,
+            host=url.host or "localhost",
+            port=url.port or 5432,
+            connect_timeout=5,
+        )
+        conn.close()
+        return
+    except psycopg2.OperationalError as exc:
+        if "does not exist" not in str(exc):
+            return
+
+    # Tenta conectar no banco padrão 'postgres' para criar o banco de destino
+    print(f"Banco de dados '{db_name}' não encontrado no PostgreSQL. Tentando criar automaticamente...")
+    try:
+        admin_conn = psycopg2.connect(
+            dbname="postgres",
+            user=url.username,
+            password=url.password,
+            host=url.host or "localhost",
+            port=url.port or 5432,
+            connect_timeout=5,
+        )
+        admin_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+        with admin_conn.cursor() as cur:
+            cur.execute(f'CREATE DATABASE "{db_name}"')
+        admin_conn.close()
+        print(f"Banco de dados '{db_name}' criado com sucesso!")
+    except Exception as create_exc:
+        print(
+            f"Aviso: Não foi possível criar o banco '{db_name}' automaticamente: {create_exc}\n"
+            f"Caso a inicialização falhe, crie-o manualmente no PostgreSQL com: CREATE DATABASE \"{db_name}\";"
+        )
+
+
 def create_admin_if_missing(db):
     existing = db.query(models.AdminUser).filter(
         models.AdminUser.username == settings.ADMIN_USERNAME
@@ -237,6 +298,7 @@ def seed_career_if_empty(db):
 
 
 def main():
+    ensure_database_exists()
     print("Criando tabelas...")
     Base.metadata.create_all(bind=engine)
     ensure_content_columns()

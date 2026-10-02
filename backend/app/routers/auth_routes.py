@@ -13,8 +13,8 @@ from app.rate_limit import rate_limiter
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
-# No máximo 10 tentativas de login a cada 5 minutos por IP.
-login_rate_limit = rate_limiter(max_requests=10, window_seconds=300)
+# No máximo 5 tentativas de login a cada 5 minutos por IP (prevenção contra brute force)
+login_rate_limit = rate_limiter(max_requests=5, window_seconds=300, scope="auth:login")
 
 
 @router.post("/login", response_model=schemas.Token, dependencies=[Depends(login_rate_limit)])
